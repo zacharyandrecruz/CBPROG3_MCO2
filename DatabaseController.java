@@ -5,7 +5,7 @@
         private Connection connection;
         
         // Database connection details
-        private static final String URL = "jdbc:mysql://localhost:3306/expense_tracker";
+        private static final String URL = "jdbc:postregsql://localhost:5433/expense_tracker";
         private static final String USERNAME = "root";
         private static final String PASSWORD = "";
         
@@ -23,13 +23,13 @@
                 
                 // Establish connection
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-                System.out.println("✅ Database connected successfully!");
+                System.out.println("Database connected successfully!");
                 
             } catch (ClassNotFoundException e) {
-                System.err.println("❌ MySQL JDBC Driver not found!");
+                System.err.println("MySQL JDBC Driver not found!");
                 e.printStackTrace();
             } catch (SQLException e) {
-                System.err.println("❌ Database connection failed!");
+                System.err.println("Database connection failed!");
                 e.printStackTrace();
             }
         }
@@ -41,10 +41,10 @@
             try {
                 if (connection != null && !connection.isClosed()) {
                     connection.close();
-                    System.out.println("✅ Database connection closed.");
+                    System.out.println("Database connection closed.");
                 }
             } catch (SQLException e) {
-                System.err.println("❌ Error closing database connection!");
+                System.err.println("Error closing database connection!");
                 e.printStackTrace();
             }
         }
@@ -76,7 +76,7 @@
                     return user;
                 }
             } catch (SQLException e) {
-                System.err.println("❌ Error loading user: " + e.getMessage());
+                System.err.println("Error loading user: " + e.getMessage());
             }
             return null;
         }
@@ -98,7 +98,7 @@
                 return rowsAffected > 0;
                 
             } catch (SQLException e) {
-                System.err.println("❌ Error saving user: " + e.getMessage());
+                System.err.println("Error saving user: " + e.getMessage());
                 return false;
             }
         }
@@ -133,7 +133,7 @@
                     budgets.add(budget);
                 }
             } catch (SQLException e) {
-                System.err.println("❌ Error loading budgets: " + e.getMessage());
+                System.err.println("Error loading budgets: " + e.getMessage());
             }
             return budgets;
         }
@@ -173,15 +173,15 @@
                 try {
                     connection.rollback();
                 } catch (SQLException ex) {
-                    System.err.println("❌ Error during rollback: " + ex.getMessage());
+                    System.err.println("Error during rollback: " + ex.getMessage());
                 }
-                System.err.println("❌ Error saving budget: " + e.getMessage());
+                System.err.println("Error saving budget: " + e.getMessage());
                 return false;
             } finally {
                 try {
                     connection.setAutoCommit(true);
                 } catch (SQLException e) {
-                    System.err.println("❌ Error resetting auto-commit: " + e.getMessage());
+                    System.err.println("Error resetting auto-commit: " + e.getMessage());
                 }
             }
         }
@@ -246,7 +246,7 @@
                     expenses.add(expense);
                 }
             } catch (SQLException e) {
-                System.err.println("❌ Error loading expenses: " + e.getMessage());
+                System.err.println("Error loading expenses: " + e.getMessage());
             }
             return expenses;
         }
@@ -296,15 +296,15 @@
                 try {
                     connection.rollback();
                 } catch (SQLException ex) {
-                    System.err.println("❌ Error during rollback: " + ex.getMessage());
+                    System.err.println("Error during rollback: " + ex.getMessage());
                 }
-                System.err.println("❌ Error saving expense: " + e.getMessage());
+                System.err.println("Error saving expense: " + e.getMessage());
                 return false;
             } finally {
                 try {
                     connection.setAutoCommit(true);
                 } catch (SQLException e) {
-                    System.err.println("❌ Error resetting auto-commit: " + e.getMessage());
+                    System.err.println("Error resetting auto-commit: " + e.getMessage());
                 }
             }
         }
@@ -324,7 +324,7 @@
                     user.addBank(rs.getString("bank_name"), rs.getString("bank_acc_num"));
                 }
             } catch (SQLException e) {
-                System.err.println("❌ Error loading user banks: " + e.getMessage());
+                System.err.println("Error loading user banks: " + e.getMessage());
             }
         }
 
@@ -393,7 +393,7 @@
             System.out.println("✅ Linked " + rowsAffected + " banks to user " + userID);
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.err.println("❌ Error linking banks to user: " + e.getMessage());
+            System.err.println("Error linking banks to user: " + e.getMessage());
             return false;
         }
     }
@@ -411,7 +411,7 @@
             System.out.println("✅ Linked " + rowsAffected + " budgets to user " + userID);
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.err.println("❌ Error linking budgets to user: " + e.getMessage());
+            System.err.println("Error linking budgets to user: " + e.getMessage());
             return false;
         }
     }
@@ -426,10 +426,10 @@
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, userID);
             int rowsAffected = stmt.executeUpdate();
-            System.out.println("✅ Linked " + rowsAffected + " expenses to user " + userID);
+            System.out.println("Linked " + rowsAffected + " expenses to user " + userID);
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.err.println("❌ Error linking expenses to user: " + e.getMessage());
+            System.err.println("Error linking expenses to user: " + e.getMessage());
             return false;
         }
     }
@@ -446,7 +446,7 @@
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.err.println("❌ Error linking bank to user: " + e.getMessage());
+            System.err.println("Error linking bank to user: " + e.getMessage());
             return false;
         }
     }
@@ -463,7 +463,7 @@
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            System.err.println("❌ Error linking budget to user: " + e.getMessage());
+            System.err.println("Error linking budget to user: " + e.getMessage());
             return false;
         }
     }
@@ -480,7 +480,7 @@
                 int rowsAffected = stmt.executeUpdate();
                 return rowsAffected > 0;
             } catch (SQLException e) {
-                System.err.println("❌ Error linking expense to user: " + e.getMessage());
+                System.err.println(" Error linking expense to user: " + e.getMessage());
                 return false;
             }
         }
@@ -498,26 +498,26 @@
                 
                 if (banksLinked && budgetsLinked && expensesLinked) {
                     connection.commit();
-                    System.out.println("✅ All relationships initialized for user " + userID);
+                    System.out.println(" All relationships initialized for user " + userID);
                     return true;
                 } else {
                     connection.rollback();
-                    System.err.println("❌ Failed to initialize all relationships");
+                    System.err.println("Failed to initialize all relationships");
                     return false;
                 }
             } catch (SQLException e) {
                 try {
                     connection.rollback();
                 } catch (SQLException ex) {
-                    System.err.println("❌ Error during rollback: " + ex.getMessage());
+                    System.err.println(" Error during rollback: " + ex.getMessage());
                 }
-                System.err.println("❌ Error initializing relationships: " + e.getMessage());
+                System.err.println("Error initializing relationships: " + e.getMessage());
                 return false;
             } finally {
                 try {
                     connection.setAutoCommit(true);
                 } catch (SQLException e) {
-                    System.err.println("❌ Error resetting auto-commit: " + e.getMessage());
+                    System.err.println("Error resetting auto-commit: " + e.getMessage());
                 }
             }
         }
