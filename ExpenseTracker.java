@@ -29,31 +29,41 @@ public class ExpenseTracker {
     private static ArrayList<Expense> expenses = new ArrayList<>();
     private static ArrayList<String> categories = new ArrayList<>();
     private static User user;
+    private static DatabaseController dbController;
 
     /**
      * Main file for the ExpenseTracker application.
-     * Initializes default categories and sample expenses, then demonstrates
-     * various expense analysis functionalities.
+     * Initializes database connection and loads user data.
      * 
      * @param args command line arguments 
      */
     public static void main(String[] args) {
+
+        // Initialize database connection
+        dbController = new DatabaseController();
+
+        System.out.println("=== Expense Tracker System ===");
         
-        // Set Defaults but you can create custom categories 
-        categories.add("Food");
-        categories.add("Transportation");
-        categories.add("Entertainment");
-        categories.add("Utilities");
-        categories.add("Shopping");
-        categories.add("Healthcare");
-        categories.add("Education");
-        categories.add("Other");
-        expenses.add(new Expense("0", 10, "PHP", new DateTime("2025", "11", "1", "12", "00")));
-        expenses.add(new Expense("1", 20, "PHP", new DateTime("2025", "11", "2", "12", "00")));
-        expenses.add(new Expense("2", 10, "PHP", new DateTime("2025", "11", "3", "12", "00")));
-        expenses.add(new Expense("3", 30, "PHP", new DateTime("2025", "12", "3", "12", "00")));
-        expenses.add(new Expense("4", 50, "PHP", new DateTime("2025", "12", "3", "12", "00"), "Food"));
-        expenses.add(new Expense("5", 100, "PHP", new DateTime("2025", "12", "3", "12", "00"), "Food"));
+        if (dbController.testConnection()) {
+            System.out.println("Database connected successfully!");
+            
+            // Load existing user (assuming user_id = 1 from your SQL)
+            user = dbController.loadUser("1");
+            if (user != null) {
+                System.out.println("User loaded: " + user.getFullName());
+                
+                // Load user's data from database
+                loadUserData();
+                
+            } else {
+                System.out.println("No user found. Please check your database.");
+                return;
+            }
+        } else {
+            System.out.println("Database connection failed. Using local storage only.");
+            // Initialize with default categories only
+            initializeDefaultCategories();
+        }
 
         boolean running = true;
         Scanner sc = new Scanner(System.in);
@@ -71,94 +81,92 @@ public class ExpenseTracker {
                 System.out.println("");
             }catch (InputMismatchException e){
                 System.err.print("\nError! Please input a valid number: ");
+                sc.nextLine(); // clear invalid input
                 choice = 0;
             }
 
             switch(choice){
 
                 case 1 : 
-
-                setBudget(sc);
-                choice = 0;
-
-                break;
+                    setBudget(sc);
+                    break;
 
                 case 2 : 
-
-                recordExpense(sc);
-                choice = 0;
-
-                break;
+                    recordExpense(sc);
+                    break;
 
                 case 3 : 
-
-                viewMonthlyExpense();
-                choice = 0;
-
-                break;
+                    viewMonthlyExpense();
+                    break;
 
                 case 4 : 
-
-                viewDailyExpense();
-                choice = 0;
-
-                break;
+                    viewDailyExpense();
+                    break;
 
                 case 5 : 
-
-                String categoryChoice = null;
-
-                System.err.println("Please enter the name of the category you'd like to view (Press enter for Non-Categorized): ");
-                categoryChoice = sc.nextLine();
-
-                if(categories.contains(categoryChoice)){
-                    viewTotalCategoryExpense(categoryChoice);
-                }else if(categoryChoice == ""){
-                    viewTotalCategoryExpense(null);
-                }else{
-                    System.out.println("Error! No category of that name exists.");
-                }
-
-                choice = 0;
-
-                break;
+                    viewTotalCategoryExpense(sc);
+                    break;
 
                 case 6 : 
-
-                viewTotalExpense();
-                choice = 0;
-
-                break;
+                    viewTotalExpense();
+                    break;
 
                 case 7 : 
-
-                viewCategoryExpensePercentage();
-                choice = 0;
-
-                break;
+                    viewCategoryExpensePercentage();
+                    break;
 
                 case 8 : 
+                    System.out.println("Are you sure?\n[1] Yes\n[2] No");
+                    System.out.print("Please input the number of your selected option: ");
+                    choice = sc.nextInt();
+                    if(choice == 1){
+                        running = false;
+                    } else {
+                        choice = 0;
+                    }
+                    break;
 
-                System.out.println("Are you sure?\n[1] Yes\n[2] No");
-                System.out.print("Please input the number of your selected option: ");
-                choice = sc.nextInt();
-
-                if(choice == 1){
-                    running = false;
-                }else{
-                    choice = 0;
-                }
-
-                break;
-
-                default: choice = 0;
-
+                default: 
+                    System.out.println("Invalid option. Please try again.");
+                    choice = 0; 
             }
-
         }
 
         sc.close();
-
+        dbController.closeConnection();
+        System.out.println("Thank you for using Expense Tracker!");
+    }
+    
+    /**
+     * Loads user data from database
+     */
+    private static void loadUserData() {
+        if (dbController.testConnection() && user != null) {
+            // Load budgets from database
+            budgets = dbController.loadUserBudgets(user.getUserID());
+            System.out.println("Loaded " + budgets.size() + " budgets from database");
+            
+            // Load expenses from database
+            expenses = dbController.loadUserExpenses(user.getUserID());
+            System.out.println("Loaded " + expenses.size() + " expenses from database");
+            
+            // Initialize categories
+            initializeDefaultCategories();
+        }
+    }
+    
+    /**
+     * Initialize default categories
+     */
+    private static void initializeDefaultCategories() {
+        categories.add("Food");
+        categories.add("Transportation");
+        categories.add("Entertainment");
+        categories.add("Utilities");
+        categories.add("Shopping");
+        categories.add("Healthcare");
+        categories.add("Education");
+        categories.add("Other");
     }
     
     /**
@@ -219,6 +227,15 @@ public class ExpenseTracker {
         
         budgets.add(budget);
         
+        // Save to database if connected
+        if (dbController.testConnection() && user != null) {
+            if (dbController.saveBudget(budget, user.getUserID())) {
+                System.out.println("Budget saved to database!");
+            } else {
+                System.out.println("Failed to save budget to database!");
+            }
+        }
+        
         // Display the summary of the budget
         System.out.println("\nBudget Summary:");
         System.out.println("Amount: " + amount);
@@ -227,7 +244,6 @@ public class ExpenseTracker {
         if (category != null) {
             System.out.println("Category: " + category);
         }
-
     }
     
     /**
@@ -266,8 +282,7 @@ public class ExpenseTracker {
         DateTime expenseDate = getDate(sc, "");
 
         System.out.print("Enter the name of the bank the expense was recorded in (Press enter for none): ");
-        String bankName = ""; 
-        bankName = sc.nextLine();
+        String bankName = sc.nextLine();
 
         String bankAccNum = "";
         String refNum = "";
@@ -279,7 +294,7 @@ public class ExpenseTracker {
             System.out.print("Enter your expense's reference number: ");
             refNum = sc.nextLine();
 
-            System.out.print("Enter the reciever's account number: ");
+            System.out.print("Enter the receiver's account number: ");
             recAccNum = sc.nextLine();
         }
 
@@ -311,12 +326,20 @@ public class ExpenseTracker {
                 expense = new Expense(expenseID, bankName, bankAccNum, amount, "PHP", refNum, recAccNum, expenseDate);
                 System.out.println("Digital Expense recorded successfully (no category)");
             }
-
         }
         
         expenses.add(expense);
         
-        // Display the summary of the budget
+        // Save to database if connected
+        if (dbController.testConnection() && user != null) {
+            if (dbController.saveExpense(expense, user.getUserID())) {
+                System.out.println("Expense saved to database!");
+            } else {
+                System.out.println("Failed to save expense to database!");
+            }
+        }
+        
+        // Display the summary of the expense
         System.out.println("\nExpense Summary:");
         System.out.println("Amount: " + amount);
         System.out.println("Date: " + expenseDate.getDateTimeString());
@@ -327,9 +350,8 @@ public class ExpenseTracker {
             System.out.println("Bank Name: " + bankName);
             System.out.println("Bank Account Number: " + bankAccNum);
             System.out.println("Reference Number: " + refNum);
-            System.out.println("Reciever's Account Number" + recAccNum);
+            System.out.println("Receiver's Account Number: " + recAccNum);
         }
-
     }
 
     /**
@@ -354,7 +376,6 @@ public class ExpenseTracker {
         dailyAverage = dailyAverage/numOfDays;
 
         return dailyAverage;
-
     }
     
     /**
@@ -379,7 +400,6 @@ public class ExpenseTracker {
         monthlyAverage = monthlyAverage/numOfMonths;
 
         return monthlyAverage;
-        
     }
 
     /**
@@ -408,21 +428,19 @@ public class ExpenseTracker {
                 currentTotal += e.getExpenseAmount();
                 totalMonths += 1;
             }else{
-
                 currentTotal += e.getExpenseAmount();
-
             }
 
             if(currency.isEmpty()){
                 currency = e.getExpenseCurrency();
             }
-
         }
 
-        System.out.println(Integer.toString(totalMonths)  + ". " + currentMonth + " / " + currentYear + " - " + currentTotal + " " + currency);
+        if (currentTotal != -1) {
+            System.out.println(Integer.toString(totalMonths) + ". " + currentMonth + " / " + currentYear + " - " + currentTotal + " " + currency);
+        }
 
         System.out.println("Computed Monthly Average: " + computeMonthlyAverage() + " " + currency);
-
     }
     
     /**
@@ -449,21 +467,33 @@ public class ExpenseTracker {
                 currentTotal += e.getExpenseAmount();
                 totalDays += 1;
             }else{
-
                 currentTotal += e.getExpenseAmount();
-
             }
 
             if(currency.isEmpty()){
                 currency = e.getExpenseCurrency();
             }
-
         }
 
-        System.out.println(totalDays + ". " + currentDay + " - " + currentTotal + " " + currency);
+        if (currentTotal != -1) {
+            System.out.println(totalDays + ". " + currentDay + " - " + currentTotal + " " + currency);
+        }
 
         System.out.println("Computed Daily Average: " + computeDailyAve() + " " + currency);
+    }
 
+    /**
+     * Handles category selection and displays expenses for the selected category
+     */
+    public static void viewTotalCategoryExpense(Scanner sc) {
+        System.out.print("Please enter the name of the category you'd like to view (Press enter for Non-Categorized): ");
+        String categoryChoice = sc.nextLine();
+
+        if(categories.contains(categoryChoice) || categoryChoice.isEmpty()){
+            viewTotalCategoryExpense(categoryChoice.isEmpty() ? null : categoryChoice);
+        }else{
+            System.out.println("Error! No category of that name exists.");
+        }
     }
 
     /**
@@ -479,60 +509,38 @@ public class ExpenseTracker {
         String currency = "";
 
         if(category == null){
-
             System.out.println("Viewing Non-Categorized Expenses");
             System.out.println("==========");
 
             for(Expense e : expenses){
-
                 if(e.getExpenseCategory() == null){
-
                     counter += 1;
                     totalExpense += e.getExpenseAmount();
-
                     System.out.println(counter + ". " + e.getExpenseDateTime().getDateString() + " - " + e.getExpenseAmount() + " " + e.getExpenseCurrency());
-
-
                 }
-
                 if(currency.isEmpty()){
                     currency = e.getExpenseCurrency();
                 }
-
             }
-
-            System.err.println("Total Expenses for Non-Categorized: " + totalExpense + " " + currency);
-
+            System.out.println("Total Expenses for Non-Categorized: " + totalExpense + " " + currency);
         }else{
-
-            System.out.println("Viewing  Expenses in the " + category + " Category");
+            System.out.println("Viewing Expenses in the " + category + " Category");
             System.out.println("==========");
 
             for(Expense e : expenses){
-
                 if(e.getExpenseCategory() != null){
-
                     if(e.getExpenseCategory().equals(category)){
-
                         counter += 1;
                         totalExpense += e.getExpenseAmount();
-    
                         System.out.println(counter + ". " + e.getExpenseDateTime().getDateString() + " - " + e.getExpenseAmount() + " " + e.getExpenseCurrency());
-    
                     }
-
                 }
-
                 if(currency.isEmpty()){
                     currency = e.getExpenseCurrency();
                 }
-
             }
-
-            System.err.println("Total Expenses for " + category + " Category: " + totalExpense + " " + currency);
-
+            System.out.println("Total Expenses for " + category + " Category: " + totalExpense + " " + currency);
         }
-
     }
     
     /**
@@ -549,20 +557,16 @@ public class ExpenseTracker {
         System.out.println("==========");
 
         for(Expense e : expenses){
-            
             counter += 1;
             totalExpense += e.getExpenseAmount();
-
             System.out.println(counter + ". " + e.getExpenseDateTime().getDateString() + " - " + e.getExpenseAmount() + " " + e.getExpenseCurrency());
 
             if(currency.isEmpty()){
                 currency = e.getExpenseCurrency();
             }
-
         }
 
-        System.err.println("Total Expenses: " + totalExpense + " " + currency);
-
+        System.out.println("Total Expenses: " + totalExpense + " " + currency);
     }
     
     /**
@@ -573,7 +577,7 @@ public class ExpenseTracker {
     public static void viewCategoryExpensePercentage() {
         
         ArrayList<Float> totalExpenses = new ArrayList<>();
-        String currency = expenses.get(0).getExpenseCurrency();
+        String currency = expenses.isEmpty() ? "PHP" : expenses.get(0).getExpenseCurrency();
 
         for(String category : categories){
             totalExpenses.add(getTotalCategoryExpense(category));
@@ -581,18 +585,22 @@ public class ExpenseTracker {
 
         totalExpenses.add(getTotalCategoryExpense(null));
 
-        for(int i = 0; i < categories.size() + 1; i++){
-            
-            float percentage = totalExpenses.get(i)/getTotalExpenses() * 100;
-
-            if(i == categories.size()){
-                System.out.println((i + 1) + ". Non-Categorized - " + totalExpenses.get(i) + " " + currency + " - " + percentage + "%");
-            }else{
-                System.out.println((i + 1) + ". " + categories.get(i) + " - " + totalExpenses.get(i) + " " + currency + " - " + percentage + "%");
-            }
-
+        float totalAllExpenses = getTotalExpenses();
+        
+        if (totalAllExpenses == 0) {
+            System.out.println("No expenses recorded yet.");
+            return;
         }
 
+        for(int i = 0; i < categories.size() + 1; i++){
+            float percentage = totalExpenses.get(i)/totalAllExpenses * 100;
+
+            if(i == categories.size()){
+                System.out.println((i + 1) + ". Non-Categorized - " + totalExpenses.get(i) + " " + currency + " - " + String.format("%.2f", percentage) + "%");
+            }else{
+                System.out.println((i + 1) + ". " + categories.get(i) + " - " + totalExpenses.get(i) + " " + currency + " - " + String.format("%.2f", percentage) + "%");
+            }
+        }
     }
 
     //Helper Functions;
@@ -606,11 +614,7 @@ public class ExpenseTracker {
      * @return the generated ID string
      */
     public static String generateID(String prefix, int idNum, int numOfDigits){
-
-        String id = "";
-
-        id = id.concat(prefix);
-
+        String id = prefix;
         String numString = Integer.toString(idNum);
 
         for(int i = numString.length(); i < numOfDigits; i++){
@@ -618,9 +622,7 @@ public class ExpenseTracker {
         }
 
         id = id.concat(numString);
-
         return id; 
-
     }
 
     /**
@@ -642,7 +644,6 @@ public class ExpenseTracker {
      * @return a DateTime object constructed from the user-provided date and time components
      */
     public static DateTime getDate(Scanner sc, String s){
-
         System.out.println("\nEnter " + s + " Date:");
         System.out.print("Year: ");
         String year = sc.nextLine();
@@ -655,10 +656,7 @@ public class ExpenseTracker {
         System.out.print("Minute: ");
         String minute = sc.nextLine();
         
-        DateTime date = new DateTime(year, month, day, hour, minute);
-
-        return date;
-
+        return new DateTime(year, month, day, hour, minute);
     }
 
     /**
@@ -670,7 +668,6 @@ public class ExpenseTracker {
      * @return the selected category name as a String, or null if no category was selected
      */
     public static String getCategory(Scanner sc){
-
         System.out.print("Choose a category (1-" + categories.size() + "), type a new category, or press ENTER to have no category: ");
         
         String categoryInput = sc.nextLine();
@@ -692,9 +689,7 @@ public class ExpenseTracker {
                 }
             }
         }
-
         return category;
-
     }
 
     /**
@@ -706,34 +701,29 @@ public class ExpenseTracker {
      *         followed by total expenses for each day
      */
     public static ArrayList<Float> getDailyExpenses(){
-
         ArrayList<Float> expensePerDay = new ArrayList<>();
-
         float totalDays = 0;
         float currentTotal = -1;
         String currentDay = "";
+        
         for(Expense e : expenses){
-            
             if(!e.getExpenseDateTime().getDateString().equals(currentDay)){
-                currentDay = e.getExpenseDateTime().getDateString();
                 if(currentTotal != -1){
                     expensePerDay.add(currentTotal);
                 }
-                currentTotal = 0;
-                currentTotal += e.getExpenseAmount();
+                currentDay = e.getExpenseDateTime().getDateString();
+                currentTotal = e.getExpenseAmount();
                 totalDays += 1;
             }else{
-
                 currentTotal += e.getExpenseAmount();
-
             }
-
         }
-        expensePerDay.add(currentTotal);
+        
+        if(currentTotal != -1){
+            expensePerDay.add(currentTotal);
+        }
         expensePerDay.add(0, totalDays);
-
         return expensePerDay;
-
     }
 
     /**
@@ -745,36 +735,31 @@ public class ExpenseTracker {
      *         followed by total expenses for each month
      */
     public static ArrayList<Float> getMonthlyExpenses(){
-        
         ArrayList<Float> expensePerMonth = new ArrayList<>();
-
         float totalMonths = 0;
         float currentTotal = -1;
         String currentMonth = "";
         String currentYear = "";
+        
         for(Expense e : expenses){
-            
             if(!e.getExpenseDateTime().getMonth().equals(currentMonth) || !e.getExpenseDateTime().getYear().equals(currentYear)){
-                currentMonth = e.getExpenseDateTime().getMonth();
-                currentYear = e.getExpenseDateTime().getYear();
                 if(currentTotal != -1){
                     expensePerMonth.add(currentTotal);
                 }
-                currentTotal = 0;
-                currentTotal += e.getExpenseAmount();
+                currentMonth = e.getExpenseDateTime().getMonth();
+                currentYear = e.getExpenseDateTime().getYear();
+                currentTotal = e.getExpenseAmount();
                 totalMonths += 1;
             }else{
-
                 currentTotal += e.getExpenseAmount();
-
             }
-
         }
-        expensePerMonth.add(currentTotal);
+        
+        if(currentTotal != -1){
+            expensePerMonth.add(currentTotal);
+        }
         expensePerMonth.add(0, totalMonths);
-
         return expensePerMonth;
-
     }
 
     /**
@@ -784,41 +769,15 @@ public class ExpenseTracker {
      * @return the total expense amount for the specified category as a float
      */
     public static float getTotalCategoryExpense(String category) {
-        
         float totalExpense = 0;
-
-        if(category == null){
-
-            for(Expense e : expenses){
-
-                if(e.getExpenseCategory() == null){
-
-                    totalExpense += e.getExpenseAmount();
-
-                }
-
+        for(Expense e : expenses){
+            if(category == null && e.getExpenseCategory() == null){
+                totalExpense += e.getExpenseAmount();
+            } else if(category != null && category.equals(e.getExpenseCategory())){
+                totalExpense += e.getExpenseAmount();
             }
-
-        }else{
-
-            for(Expense e : expenses){
-
-                if(e.getExpenseCategory() != null){
-
-                    if(e.getExpenseCategory().equals(category)){
-
-                        totalExpense += e.getExpenseAmount();
-    
-                    }
-
-                }
-
-            }
-
         }
-
         return totalExpense;
-
     }
 
     /**
@@ -827,26 +786,10 @@ public class ExpenseTracker {
      * @return the grand total of all expenses as a float
      */
     public static float getTotalExpenses(){
-        
         float totalExpense = 0;
-
         for(Expense e : expenses){
-            
             totalExpense += e.getExpenseAmount();
-
         }
-
         return totalExpense;
-
     }
-
 }
-
-    /*
-    
-    
-
-    public ArrayList<String> getCategories() {
-        return categories;
-    }
-}*/
