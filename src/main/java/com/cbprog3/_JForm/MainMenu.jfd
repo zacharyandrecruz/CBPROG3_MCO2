@@ -1,0 +1,57 @@
+JFDML JFormDesigner: "8.2.2.0.382" Java: "21.0.2" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "hidemode 3"
+			"$columnConstraints": "[grow,fill][grow,fill][grow,fill][fill][grow,fill][grow,fill][grow,fill][grow,fill]"
+			"$rowConstraints": "[grow][grow][grow][grow][][grow]"
+		} ) {
+			name: "this"
+			"$locationPolicy": 1
+			"title": "Expense Tracker - Main Menu"
+			"$sizePolicy": 1
+			"resizable": false
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "TitleLabel"
+				"text": "Expense Tracker"
+				"horizontalAlignment": 0
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 8, false )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 1 4 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "EmailLabel"
+				"text": "Email:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 2 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "EmailField"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 2 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "PasswordLabel"
+				"text": "Password:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 3 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "PasswordField"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 3 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "LoginButton"
+				"text": "Login"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 4 4,alignx center,growx 0,wmax 100,hmin 40"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 400 )
+		} )
+	}
+}
