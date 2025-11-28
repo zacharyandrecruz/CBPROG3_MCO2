@@ -17,9 +17,9 @@ import com.cbprog3.Model.User;
 public class DatabaseController {
     private Connection connection;
     
-    private static final String URL = "jdbc:mysql://localhost:3306/mco2_db";
-    private static final String USERNAME = "acee";
-    private static final String PASSWORD = "09212005";
+    private static final String URL = "jdbc:mysql://localhost:3306/expense_tracker";
+    private static final String USERNAME = "user1";
+    private static final String PASSWORD = "password";
     
     public DatabaseController() {
         connectToDatabase();
@@ -433,11 +433,7 @@ public class DatabaseController {
                 expenseStmt.setFloat(1, expense.getExpenseAmount());
                 expenseStmt.setDate(2, java.sql.Date.valueOf(dateTimeToSQLDate(expense.getExpenseDateTime())));
                 expenseStmt.setString(3, expense.getExpenseCategory());
-
-                // DEBUG (remove after confirming)
-                 System.out.println("DEBUG: Executing expense insert...");
-                int rowsAffected = expenseStmt.executeUpdate();
-                System.out.println("DEBUG: Rows affected: " + rowsAffected);
+                expenseStmt.executeUpdate();
                 
                 // Get the auto-generated expense_id
                 try (ResultSet generatedKeys = expenseStmt.getGeneratedKeys()) {
@@ -453,8 +449,6 @@ public class DatabaseController {
                 userExpenseStmt.setInt(1, Integer.parseInt(userID));
                 userExpenseStmt.setInt(2, generatedExpenseId);
                 userExpenseStmt.executeUpdate();
-                //DEBUG
-                System.out.println("DEBUG: Linked expense to user");
             }
             
             // If it's a digital expense, insert into Digital_Expense table
@@ -618,28 +612,26 @@ public class DatabaseController {
     }
 
     private String getBankId(Bank bank) {
-        if (bank == null) return null;
+    if (bank == null) return null;
     
-        // Map based on the bank data from the SQL script
-        switch(bank.getBankName().toUpperCase()) {
-            case "BPI" -> {
-                return "1"; // Uses actual bank_id values from your database
-            }
-            case "BDO" -> {
-                return "2";
-            }
-            case "VISA" -> {
-                return "3";
-            }
-            case "METROBANK" -> {
-                return "4";
-            }
-            default -> {
-                System.err.println(" Unknown bank: " + bank.getBankName());
-                return null;
-            }
+    String sql = "SELECT bank_id FROM Bank WHERE bank_name = ? AND bank_acc_num = ?";
+    
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, bank.getBankName());
+        stmt.setString(2, bank.getBankAccNum());
+        ResultSet rs = stmt.executeQuery();
+        
+        if (rs.next()) {
+            return String.valueOf(rs.getInt("bank_id"));
+        } else {
+            System.err.println("Bank not found: " + bank.getBankName() + " - " + bank.getBankAccNum());
+            return null;
         }
+    } catch (SQLException e) {
+        System.err.println("Error getting bank ID: " + e.getMessage());
+        return null;
     }
+}
     
     private DateTime sqlDateToDateTime(java.sql.Date sqlDate) {
         if (sqlDate == null) return null;
