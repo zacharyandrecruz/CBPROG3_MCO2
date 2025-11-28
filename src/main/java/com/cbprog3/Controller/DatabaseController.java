@@ -17,9 +17,9 @@ import com.cbprog3.Model.User;
 public class DatabaseController {
     private Connection connection;
     
-    private static final String URL = "jdbc:mysql://localhost:3306/mco2_db";
-    private static final String USERNAME = "acee";
-    private static final String PASSWORD = "09212005";
+    private static final String URL = "jdbc:mysql://localhost:3306/expense_tracker";
+    private static final String USERNAME = "user1";
+    private static final String PASSWORD = "password";
     
     public DatabaseController() {
         connectToDatabase();
@@ -433,7 +433,11 @@ public class DatabaseController {
                 expenseStmt.setFloat(1, expense.getExpenseAmount());
                 expenseStmt.setDate(2, java.sql.Date.valueOf(dateTimeToSQLDate(expense.getExpenseDateTime())));
                 expenseStmt.setString(3, expense.getExpenseCategory());
-                expenseStmt.executeUpdate();
+
+                // DEBUG (remove after confirming)
+                 System.out.println("DEBUG: Executing expense insert...");
+                int rowsAffected = expenseStmt.executeUpdate();
+                System.out.println("DEBUG: Rows affected: " + rowsAffected);
                 
                 // Get the auto-generated expense_id
                 try (ResultSet generatedKeys = expenseStmt.getGeneratedKeys()) {
@@ -449,6 +453,8 @@ public class DatabaseController {
                 userExpenseStmt.setInt(1, Integer.parseInt(userID));
                 userExpenseStmt.setInt(2, generatedExpenseId);
                 userExpenseStmt.executeUpdate();
+                //DEBUG
+                System.out.println("DEBUG: Linked expense to user");
             }
             
             // If it's a digital expense, insert into Digital_Expense table
