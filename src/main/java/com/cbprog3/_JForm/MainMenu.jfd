@@ -5,53 +5,72 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "hidemode 3"
-			"$columnConstraints": "[grow,fill][grow,fill][grow,fill][fill][grow,fill][grow,fill][grow,fill][grow,fill]"
-			"$rowConstraints": "[grow][grow][grow][grow][][grow]"
+			"$columnConstraints": "[grow,fill][grow,fill][grow,fill][grow,fill][grow,fill]"
+			"$rowConstraints": "[grow][grow][grow][grow][grow][]"
 		} ) {
-			name: "this"
+			name: "MainMenu"
 			"$locationPolicy": 1
-			"title": "Expense Tracker - Main Menu"
 			"$sizePolicy": 1
 			"resizable": false
+			"title": "Expense Tracker - Main Menu"
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "TitleLabel"
-				"text": "Expense Tracker"
+				name: "label1"
+				"text": "Logged in as: "
 				"horizontalAlignment": 0
-				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 8, false )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 2 1 4 1"
+				"value": "cell 0 0"
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "EmailLabel"
-				"text": "Email:"
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane1"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "table1"
+				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 2 2 2 1"
+				"value": "cell 0 1"
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "EmailField"
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane2"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "table2"
+				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 4 2 2 1"
+				"value": "cell 1 1"
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "PasswordLabel"
-				"text": "Password:"
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane3"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "table3"
+				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 2 3 2 1"
-			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "PasswordField"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 4 3 2 1"
+				"value": "cell 3 1"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "LoginButton"
-				"text": "Login"
+				name: "button1"
+				"text": "<html>Manage<br>Users</html>"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 4 4,alignx center,growx 0,wmax 100,hmin 40"
+				"value": "cell 0 3,align center center,grow 0 0,width :100:100,hmin 50"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button4"
+				"text": "<html>Manage<br>Expenses</html>"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 3,alignx center,growx 0,width :100:100,hmin 50"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button2"
+				"text": "<html>Manage<br>Budgets</html>"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 3,alignx center,growx 0,width :100:100,hmin 50"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button7"
+				"text": "<html>View<br>Insights</html>"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 4 1 2,alignx center,growx 0,width :100:100,hmin 50"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 400 )
+			"size": new java.awt.Dimension( 900, 600 )
 		} )
 	}
 }

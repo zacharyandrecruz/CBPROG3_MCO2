@@ -1,10 +1,14 @@
 package com.cbprog3.Controller;
 
-import com.cbprog3.Model.*;
+import com.cbprog3.Model.User;
 
 public class UserController {
     private User currentUser;
     
+    public UserController(User user){
+        currentUser = user;
+    }
+
     public boolean login(String email, String password) {
         if (currentUser != null && 
             currentUser.getUserEmail().equals(email) && 

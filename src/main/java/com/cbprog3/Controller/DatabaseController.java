@@ -1,6 +1,5 @@
 package com.cbprog3.Controller;
 
-import com.cbprog3.Model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import com.cbprog3.Model.Bank;
+import com.cbprog3.Model.Budget;
+import com.cbprog3.Model.DateTime;
+import com.cbprog3.Model.Expense;
+import com.cbprog3.Model.User;
 
 public class DatabaseController {
     private Connection connection;
@@ -80,6 +85,7 @@ public class DatabaseController {
                 
                 // Load user's banks
                 loadUserBanks(user);
+                System.out.println("Loaded User: " + user.getFullName());
                 return user;
             }
         } catch (SQLException e) {

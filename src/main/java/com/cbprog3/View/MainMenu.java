@@ -1,86 +1,71 @@
 package com.cbprog3.View;
-import java.awt.*;
-import javax.swing.*;
-import net.miginfocom.swing.*;
+
+import java.awt.Container;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import net.miginfocom.swing.MigLayout;
 /*
- * Created by JFormDesigner on Thu Nov 27 23:35:47 SGT 2025
+ * Created by JFormDesigner on Fri Nov 28 10:05:56 PST 2025
  */
 
 
 
 /**
- * @author Acee
+ * @author zacha
  */
-public class MainMenu extends JFrame {
-	
+public class MainMenu{
 	public MainMenu() {
 		initComponents();
 	}
 
+	public void setVisible(boolean b){
+		MainMenu.setVisible(b);
+	}
+
+	public boolean isVisible(){
+		return MainMenu.isVisible();
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-		// Generated using JFormDesigner Evaluation license - Acweafa
-		TitleLabel = new JLabel();
-		EmailLabel = new JLabel();
-		EmailField = new JTextField();
-		PasswordLabel = new JLabel();
-		PasswordField = new JTextField();
-		LoginButton = new JButton();
+		// Generated using JFormDesigner Evaluation license - Asdasmaksd
+		MainMenu = new JFrame();
+		label1 = new JLabel();
 
-		//======== this ========
-		setTitle("Expense Tracker - Main Menu");
-		setResizable(false);
-		Container contentPane = getContentPane();
-		contentPane.setLayout(new MigLayout(
-			"hidemode 3",
-			// columns
-			"[grow,fill]" +
-			"[grow,fill]" +
-			"[grow,fill]" +
-			"[fill]" +
-			"[grow,fill]" +
-			"[grow,fill]" +
-			"[grow,fill]" +
-			"[grow,fill]",
-			// rows
-			"[grow]" +
-			"[grow]" +
-			"[grow]" +
-			"[grow]" +
-			"[]" +
-			"[grow]"));
+		//======== MainMenu ========
+		{
+			MainMenu.setResizable(false);
+			MainMenu.setTitle("Expense Tracker - Main Menu");
+			Container MainMenuContentPane = MainMenu.getContentPane();
+			MainMenuContentPane.setLayout(new MigLayout(
+				"hidemode 3",
+				// columns
+				"[grow,fill]" +
+				"[grow,fill]" +
+				"[grow,fill]" +
+				"[grow,fill]" +
+				"[grow,fill]",
+				// rows
+				"[grow]" +
+				"[grow]" +
+				"[grow]" +
+				"[grow]" +
+				"[grow]"));
 
-		//---- TitleLabel ----
-		TitleLabel.setText("Expense Tracker");
-		TitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		TitleLabel.setFont(TitleLabel.getFont().deriveFont(TitleLabel.getFont().getSize() + 8f));
-		contentPane.add(TitleLabel, "cell 2 1 4 1");
-
-		//---- EmailLabel ----
-		EmailLabel.setText("Email:");
-		contentPane.add(EmailLabel, "cell 2 2 2 1");
-		contentPane.add(EmailField, "cell 4 2 2 1");
-
-		//---- PasswordLabel ----
-		PasswordLabel.setText("Password:");
-		contentPane.add(PasswordLabel, "cell 2 3 2 1");
-		contentPane.add(PasswordField, "cell 4 3 2 1");
-
-		//---- LoginButton ----
-		LoginButton.setText("Login");
-		contentPane.add(LoginButton, "cell 4 4,alignx center,growx 0,wmax 100,hmin 40");
-		setSize(400, 400);
-		setLocationRelativeTo(null);
+			//---- label1 ----
+			label1.setText("WOWIE YOURE AT THE MAIN MENU!!! :D");
+			MainMenuContentPane.add(label1, "cell 2 2");
+			MainMenu.setSize(400, 400);
+			MainMenu.setLocationRelativeTo(null);
+		}
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-	// Generated using JFormDesigner Evaluation license - Acweafa
-	private JLabel TitleLabel;
-	private JLabel EmailLabel;
-	private JTextField EmailField;
-	private JLabel PasswordLabel;
-	private JTextField PasswordField;
-	private JButton LoginButton;
+	// Generated using JFormDesigner Evaluation license - Asdasmaksd
+	private JFrame MainMenu;
+	private JLabel label1;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
