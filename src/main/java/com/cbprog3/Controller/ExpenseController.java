@@ -126,16 +126,80 @@ public class ExpenseController {
     }
     
     public ArrayList<Float> getDailyExpenses() {
-        // Your existing getDailyExpenses() logic here
         ArrayList<Float> expensePerDay = new ArrayList<>();
-        // ... implementation from ExpenseTracker
+        float totalDays = 0;
+        float currentTotal = -1;
+        String currentDay = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getDateString().equals(currentDay)){
+                if(currentTotal != -1){
+                    expensePerDay.add(currentTotal);
+                }
+                currentDay = e.getExpenseDateTime().getDateString();
+                currentTotal = e.getExpenseAmount();
+                totalDays += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expensePerDay.add(currentTotal);
+        }
         return expensePerDay;
     }
     
+    public ArrayList<String> getDailyExpensesDate() {
+        ArrayList<String> expenseDay = new ArrayList<>();
+        float totalDays = 0;
+        float currentTotal = -1;
+        String currentDay = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getDateString().equals(currentDay)){
+                if(currentTotal != -1){
+                    expenseDay.add(currentDay);
+                }
+                currentDay = e.getExpenseDateTime().getDateString();
+                currentTotal = e.getExpenseAmount();
+                totalDays += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expenseDay.add(currentDay);
+        }
+        return expenseDay;
+    }
+
     public ArrayList<Float> getMonthlyExpenses() {
-        // Your existing getMonthlyExpenses() logic here
         ArrayList<Float> expensePerMonth = new ArrayList<>();
-        // ... implementation from ExpenseTracker
+        float totalMonths = 0;
+        float currentTotal = -1;
+        String currentMonth = "";
+        String currentYear = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getMonth().equals(currentMonth) || !e.getExpenseDateTime().getYear().equals(currentYear)){
+                if(currentTotal != -1){
+                    expensePerMonth.add(currentTotal);
+                }
+                currentMonth = e.getExpenseDateTime().getMonth();
+                currentYear = e.getExpenseDateTime().getYear();
+                currentTotal = e.getExpenseAmount();
+                totalMonths += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expensePerMonth.add(currentTotal);
+        }
+        expensePerMonth.add(0, totalMonths);
         return expensePerMonth;
     }
     

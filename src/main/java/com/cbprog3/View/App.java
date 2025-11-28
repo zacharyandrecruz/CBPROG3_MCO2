@@ -20,6 +20,7 @@ public class App
         ExpenseMenu em = new ExpenseMenu(uc, dbc, ec);
         BudgetMenu bm = new BudgetMenu(uc, dbc, ec);
         UserMenu um = new UserMenu(uc, dbc);
+        InsightMenu im = new InsightMenu(uc, dbc, ec);
         lm.setVisible(true);
 
         System.out.println("Login Menu Opened!");
@@ -55,6 +56,13 @@ public class App
                 mm.setVisible(true);
             }
 
+            if(im.getStatus()){
+                im.setVisible(false);
+                im.setStatus(false);
+                mm.reloadTables();
+                mm.setVisible(true);
+            }
+
             if(mm.isVisible() && mm.getSwitchStatus() && !um.isVisible()){
 
                 System.out.println("Switching to " + mm.getSwitchDestination() + "!");
@@ -64,7 +72,7 @@ public class App
                     case "manageUsers": um.setVisible(true); break;
                     case "manageExpenses": mm.setVisible(false); em.setVisible(true); em.refreshTable(); break;
                     case "manageBudgets": mm.setVisible(false); bm.setVisible(true); bm.refreshTable(); break;
-                    case "viewInsights": mm.setVisible(false); break;
+                    case "viewInsights": mm.setVisible(false); im.setVisible(true); im.refreshTables(); break;
                     
                 }
 

@@ -15,21 +15,33 @@ new FormModel {
 			"title": "Expense Tracker - Main Menu"
 			"defaultCloseOperation": 3
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label3"
-				"text": "text"
+				name: "DailyExpenseLabel"
+				"text": "Daily Expenses:"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 0"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label4"
-				"text": "text"
+				name: "DailyAverageLabel"
+				"text": "Average Daily Expense:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 0"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "MonthlyExpenseLabel"
+				"text": "Monthly Expenses"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 4 0"
 			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "MonthlyAverageLabel"
+				"text": "Average Monthly Expense:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 8 0"
+			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "ExpensePane"
+				name: "DailyPane"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "ExpenseTable"
+					name: "DailyTable"
 					"showHorizontalLines": true
 					"showVerticalLines": true
 					"selectionMode": 1
@@ -39,9 +51,9 @@ new FormModel {
 				"value": "cell 0 1 4 1,height 200::300"
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "BudgetPane"
+				name: "MonthlyPane"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "BudgetTable"
+					name: "MonthlyTable"
 					"showHorizontalLines": true
 					"showVerticalLines": true
 					"selectionMode": 1
@@ -51,29 +63,35 @@ new FormModel {
 				"value": "cell 4 1 5 1,height 200::300"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label1"
-				"text": "text"
+				name: "TotalLabel"
+				"text": "Total Expenses:"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 2"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label2"
-				"text": "text"
+				name: "TotalAverageLabel"
+				"text": "Average Expense:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 2"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "CategoryTotalLabel"
+				"text": "Total Expenses (Per Category):"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 4 2"
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane1"
+				name: "TotalPane"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "table1"
+					name: "TotalTable"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 3 4 1,height 200::300"
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane2"
+				name: "CategoryTotalPane"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "table2"
+					name: "CategoryTotalTable"
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 4 3 5 1,height 200::300"
@@ -86,8 +104,9 @@ new FormModel {
 				"value": "cell 0 6,align center center,grow 0 0,width :100:100,hmin 50"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
+				name: "BackButton"
 				"text": "Back"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "Back", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 8 6,align center center,grow 0 0,width 100,hmin 50"
 			} )

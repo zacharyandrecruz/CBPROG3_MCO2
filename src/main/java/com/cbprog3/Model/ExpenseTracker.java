@@ -725,7 +725,6 @@ public class ExpenseTracker {
         if(currentTotal != -1){
             expensePerDay.add(currentTotal);
         }
-        expensePerDay.add(0, totalDays);
         return expensePerDay;
     }
 
