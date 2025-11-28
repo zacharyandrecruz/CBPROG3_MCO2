@@ -44,6 +44,7 @@ public class Expense {
      */
     public Expense(String expenseID, String bankName, String bankAccNum, float amount, String currency, 
                   String refNum, String receiverAccNo, DateTime dateTime, String category) {
+        this.expenseID = expenseID;
         this.expenseBank = new Bank(bankName, bankAccNum);
         this.expenseAmount = amount;
         this.expenseCurrency = currency;
@@ -83,6 +84,7 @@ public class Expense {
      * @param category the category classification of the expense
      */
     public Expense(String expenseID, float amount, String currency, DateTime dateTime, String category) {
+        this.expenseID = expenseID;
         this.expenseAmount = amount;
         this.expenseCurrency = currency;
         this.expenseDateTime = dateTime;
