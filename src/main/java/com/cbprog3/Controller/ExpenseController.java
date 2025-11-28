@@ -16,14 +16,14 @@ public class ExpenseController {
     }
     
     private void initializeDefaultCategories() {
-        categories.add("Food");
-        categories.add("Transportation");
-        categories.add("Entertainment");
-        categories.add("Utilities");
-        categories.add("Shopping");
-        categories.add("Healthcare");
-        categories.add("Education");
-        categories.add("Other");
+        categories.add("FOOD");
+        categories.add("TRANSPORTATION");
+        categories.add("ENTERTAINMENT");
+        categories.add("UTILITIES");
+        categories.add("SHOPPING");
+        categories.add("HEALTHCARE");
+        categories.add("EDUCATION");
+        categories.add("OTHER");
     }
     
     // Budget Management
