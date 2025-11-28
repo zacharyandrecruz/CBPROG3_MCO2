@@ -1,4 +1,3 @@
-
 /**
  * The ExpenseTracker class provides a comprehensive system for managing personal finances.
  * It allows users to set budgets, record expenses, track spending by category, 
@@ -22,10 +21,11 @@
  * @since 2025
  */
 package com.cbprog3.Model;
-import com.cbprog3.Controller.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import com.cbprog3.Controller.DatabaseController;
 
 public class ExpenseTracker {
     private static ArrayList<Budget> budgets = new ArrayList<>();
