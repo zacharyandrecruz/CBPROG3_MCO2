@@ -5,7 +5,7 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
 			"$layoutConstraints": "hidemode 3"
-			"$columnConstraints": "[grow,fill][grow,fill][grow,fill][grow,fill][grow,fill]"
+			"$columnConstraints": "[grow,fill][grow,fill][grow,fill][grow,fill][grow,fill][grow,fill][grow,fill][grow,fill][grow,fill]"
 			"$rowConstraints": "[grow][grow][grow][grow][grow][]"
 		} ) {
 			name: "MainMenu"
@@ -14,59 +14,69 @@ new FormModel {
 			"resizable": false
 			"title": "Expense Tracker - Main Menu"
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label1"
+				name: "UserLabel"
 				"text": "Logged in as: "
-				"horizontalAlignment": 0
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 0"
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane1"
+				name: "ExpensePane"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "table1"
+					name: "ExpenseTable"
+					"showHorizontalLines": true
+					"showVerticalLines": true
+					"selectionMode": 1
+					"autoResizeMode": 0
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 1"
+				"value": "cell 0 1 4 1"
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane2"
+				name: "BudgetPane"
 				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "table2"
+					name: "BudgetTable"
+					"showHorizontalLines": true
+					"showVerticalLines": true
+					"selectionMode": 1
+					"autoResizeMode": 0
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 1"
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane3"
-				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "table3"
-				} )
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 1"
+				"value": "cell 4 1 5 1"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
-				"text": "<html>Manage<br>Users</html>"
-			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 3,align center center,grow 0 0,width :100:100,hmin 50"
-			} )
-			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button4"
+				name: "ExpenseButton"
 				"text": "<html>Manage<br>Expenses</html>"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ManageExpenses", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 3,alignx center,growx 0,width :100:100,hmin 50"
+				"value": "cell 0 3,alignx center,growx 0,width :100:100,hmin 50"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button2"
+				name: "BudgetButton"
 				"text": "<html>Manage<br>Budgets</html>"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ManageBudgets", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 3,alignx center,growx 0,width :100:100,hmin 50"
+				"value": "cell 8 3,alignx center,growx 0,width :100:100,hmin 50"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button7"
-				"text": "<html>View<br>Insights</html>"
+				name: "UserButton"
+				"text": "<html>Manage<br>User</html>"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ManageUsers", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 1 4 1 2,alignx center,growx 0,width :100:100,hmin 50"
+				"value": "cell 2 4,align center center,grow 0 0,width :100:100,hmin 50"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "RefreshTables"
+				"text": "<html>Refresh<br>Tables</html>"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "RefreshTables", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 4 2 1,alignx center,growx 0,width :100:100,hmin 50"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "InsightButton"
+				"text": "<html>View<br>Insights</html>"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ViewInsights", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 5 4,alignx center,growx 0,width :100:100,hmin 50"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )

@@ -29,6 +29,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "EmailField"
+				"text": "user123@email.com"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 2 2 4 1,alignx trailing,growx 0,wmin 200"
 			} )
@@ -40,6 +41,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "PasswordField"
+				"text": "password123"
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 2 3 4 1,alignx trailing,growx 0,wmin 200"
 			} )

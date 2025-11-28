@@ -1,64 +1,22 @@
-package com.cbprog3.View;
+package com.cbprog3._JForm;
 
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import com.cbprog3.Controller.UserController;
-
-import net.miginfocom.swing.MigLayout;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import net.miginfocom.swing.*;
 /*
- * Created by JFormDesigner on Fri Nov 28 10:23:02 PST 2025
+ * Created by JFormDesigner on Fri Nov 28 15:33:15 SGT 2025
  */
 
 
 
 /**
- * @author zacha
+ * @author Acee
  */
-public class LoginMenu{
-
-	private UserController uc;
-	private boolean loginComplete = false;
-
-	public boolean getLoginStatus(){
-		return loginComplete;
-	}
-
-	public void setVisible(boolean b){
-		LoginMenu.setVisible(b);
-	}
-
-	public boolean isVisible(){
-		return LoginMenu.isVisible();
-	}
-
-	public LoginMenu(UserController uc) {
-		this.uc = uc;
-
-		initComponents();
-	}
+public class LoginMenu  {
 
 	private void Login(ActionEvent e) {
-		
-		System.out.println("PRESSED LOGIN! AAHAHSDUASHDOANN");
-		System.out.println("EMAIL: " + EmailField.getText());
-		System.out.println("PASSWORD: " + PasswordField.getText());
-
-		if(uc.login(EmailField.getText(), PasswordField.getText())){
-			System.out.println("Login Successful!!! :D");
-			loginComplete = true;
-			System.out.println("Login Status = " + loginComplete);
-			System.out.println("Is Visible = " + LoginMenu.isVisible());
-		}else{
-			System.out.println("Login Failed... :(");
-		}
-
+		// TODO add your code here
 	}
 
 	private void initComponents() {
