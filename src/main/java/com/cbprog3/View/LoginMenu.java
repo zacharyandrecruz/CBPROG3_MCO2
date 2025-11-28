@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import com.cbprog3.Controller.UserController;
 
@@ -76,6 +77,7 @@ public class LoginMenu{
 		{
 			LoginMenu.setTitle("Expense Tracker - Login Menu");
 			LoginMenu.setResizable(false);
+			LoginMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			Container LoginMenuContentPane = LoginMenu.getContentPane();
 			LoginMenuContentPane.setLayout(new MigLayout(
 				"hidemode 3",

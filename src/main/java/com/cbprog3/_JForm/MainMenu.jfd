@@ -13,6 +13,7 @@ new FormModel {
 			"$sizePolicy": 1
 			"resizable": false
 			"title": "Expense Tracker - Main Menu"
+			"defaultCloseOperation": 3
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "UserLabel"
 				"text": "Logged in as: "

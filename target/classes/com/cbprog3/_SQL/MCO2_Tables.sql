@@ -1,4 +1,5 @@
 
+
 -- Expense Tracker System Database
 -- This script creates tables and populates them.
 
@@ -53,7 +54,7 @@ CREATE TABLE Digital_Expense (
 -- DDL: CREATE TRANSACTIONAL/LINKING TABLES
 -- =========================================================
 
--- Transactional Table 7: User_Budget
+-- Transactional Table 6: User_Budget
 CREATE TABLE User_Budget (
     user_id INT,
     budget_id INT,
@@ -62,7 +63,7 @@ CREATE TABLE User_Budget (
     FOREIGN KEY (budget_id) REFERENCES Budget(budget_id)
 );
 
--- Transactional Table 8: User_Bank
+-- Transactional Table 7: User_Bank
 CREATE TABLE User_Bank (
     user_id INT,
     bank_id INT,
@@ -71,7 +72,7 @@ CREATE TABLE User_Bank (
     FOREIGN KEY (bank_id) REFERENCES Bank(bank_id)
 );
 
--- Transactional Table 9: User_Expense
+-- Transactional Table 8: User_Expense
 CREATE TABLE User_Expense (
     user_id INT,
     expense_id INT,
@@ -168,7 +169,7 @@ INSERT INTO Expense (expense_amt, expense_date, expense_category) VALUES
 -- RENT
 (2000.00, '2025-12-01', 'RENT');
 
--- JANUARY 2026 (partial) - FIXED: Removed manual expense_id values
+-- JANUARY 2026 (partial)
 INSERT INTO Expense (expense_amt, expense_date, expense_category) VALUES
 -- FOOD (daily small meals up to Jan 15)
 (150.00, '2026-01-01', 'FOOD'),
@@ -215,44 +216,34 @@ INSERT INTO Expense (expense_amt, expense_date, expense_category) VALUES
 -- SUBSCRIPTION
 (200.00, '2026-01-01', 'SUBSCRIPTION');
 
--- 5. Digital Expense - FIXED: Added proper bank_id values
-INSERT INTO Digital_Expense (expense_id, bank_id, expense_refnum) VALUES
--- December 2025 - Subscription (using expense_id 1 and bank_id 1)
-(1, 1, '22220001'),
-(2, 1, '22220002'),
-(3, 2, '22220003'),
-(4, 2, '22220004'),
-(5, 3, '22220005'),
+-- 5. Digital Expense - FIXED: Use valid expense_ids
+-- Wait until all expenses are inserted, then link valid ones
+INSERT INTO Digital_Expense (expense_id, bank_id, expense_refnum) 
+SELECT e.expense_id, 
+       CASE 
+         WHEN e.expense_category = 'SUBSCRIPTION' THEN 1
+         WHEN e.expense_amt = 200.00 THEN 2
+         ELSE 3
+       END,
+       CONCAT('222200', LPAD(e.expense_id, 2, '0'))
+FROM Expense e
+WHERE e.expense_id BETWEEN 1 AND 10;  -- Only use existing expense_ids
 
--- January 2026 - Subscription (using later expense_ids)
-(35, 1, '22220006'),
-(36, 1, '22220007'),
-(37, 2, '22220008'),
-(38, 3, '22220009'),
-(39, 4, '22220010');
 
--- User_Bank
-INSERT INTO user_bank (user_id, bank_id)
+
+
+-- POPULATING THE TRANSACTIONAL TABLES 
+
+
+INSERT INTO User_Bank (user_id, bank_id)
 SELECT user_id, bank_id FROM Users, Bank;
 
--- User_Budget
-INSERT INTO user_budget (user_id, budget_id)
+INSERT INTO User_Budget (user_id, budget_id)
 SELECT user_id, budget_id FROM Users, Budget;
 
--- User_Expense
-INSERT INTO user_expense (user_id, expense_id)
+INSERT INTO User_Expense (user_id, expense_id)
 SELECT user_id, expense_id FROM Users, Expense;
 
 
--- POPULATING THE TRANSACTIONAL TABLES
--- User_Bank
-INSERT INTO user_bank (user_id, bank_id)
-SELECT user_id, bank_id FROM Users, Bank;
 
--- User_Budget
-INSERT INTO user_budget (user_id, budget_id)
-SELECT user_id, budget_id FROM Users, Budget;
 
--- User_Expense
-INSERT INTO user_expense (user_id, expense_id)
-SELECT user_id, expense_id FROM Users, Expense;

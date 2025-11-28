@@ -34,6 +34,7 @@ public class LoginMenu  {
 		{
 			LoginMenu.setTitle("Expense Tracker - Login Menu");
 			LoginMenu.setResizable(false);
+			LoginMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			Container LoginMenuContentPane = LoginMenu.getContentPane();
 			LoginMenuContentPane.setLayout(new MigLayout(
 				"hidemode 3",

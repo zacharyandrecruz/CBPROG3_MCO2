@@ -17,6 +17,7 @@ public class App
 
         LoginMenu lm = new LoginMenu(uc);
         MainMenu mm = new MainMenu(uc, dbc);
+        ExpenseMenu em = new ExpenseMenu(uc, dbc, ec);
         lm.setVisible(true);
 
         System.out.println("Login Menu Opened!");
@@ -31,6 +32,13 @@ public class App
                 mm.setVisible(true);
             }
 
+            if(em.getStatus()){
+                em.setVisible(false);
+                em.setStatus(false);
+                mm.reloadTables();
+                mm.setVisible(true);
+            }
+
             if(mm.isVisible() && mm.getSwitchStatus()){
 
                 System.out.println("Switching to " + mm.getSwitchDestination() + "!");
@@ -38,7 +46,7 @@ public class App
                 switch(mm.getSwitchDestination()){
 
                     case "manageUsers": mm.setVisible(false); break;
-                    case "manageExpenses": mm.setVisible(false); break;
+                    case "manageExpenses": mm.setVisible(false); em.setVisible(true); em.refreshTable(); break;
                     case "manageBudgets": mm.setVisible(false); break;
                     case "viewInsights": mm.setVisible(false); break;
                     

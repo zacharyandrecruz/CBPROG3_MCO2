@@ -65,10 +65,6 @@ public class MainMenu{
 		//Load Expenses
 		ArrayList<Expense> expenseList = dbc.loadUserExpenses(uc.getCurrentUser().getUserID());
 
-		for(Expense e: expenseList){
-			System.out.println(e.getExpenseID());
-		}
-
 		TableModel etm = new TableModel() {
 
 			@Override
@@ -279,6 +275,7 @@ public class MainMenu{
 		{
 			MainMenu.setResizable(false);
 			MainMenu.setTitle("Expense Tracker - Main Menu");
+			MainMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			Container MainMenuContentPane = MainMenu.getContentPane();
 			MainMenuContentPane.setLayout(new MigLayout(
 				"hidemode 3",

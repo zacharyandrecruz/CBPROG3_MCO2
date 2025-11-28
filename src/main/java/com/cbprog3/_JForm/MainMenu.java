@@ -54,6 +54,7 @@ public class MainMenu  {
 		{
 			MainMenu.setResizable(false);
 			MainMenu.setTitle("Expense Tracker - Main Menu");
+			MainMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			Container MainMenuContentPane = MainMenu.getContentPane();
 			MainMenuContentPane.setLayout(new MigLayout(
 				"hidemode 3",
