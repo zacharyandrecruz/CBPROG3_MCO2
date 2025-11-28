@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 import com.cbprog3.Controller.DatabaseController;
 import com.cbprog3.Controller.ExpenseController;
 import com.cbprog3.Controller.UserController;
+import com.cbprog3.Model.DateTime;
 import com.cbprog3.Model.Expense;
 
 import net.miginfocom.swing.*;
@@ -190,6 +191,16 @@ public class ExpenseMenu  {
 
 	private void ConfirmAdd(ActionEvent e) {
 		
+		float f = Float.parseFloat(ExpenseAmountFieldAdd.getText());
+		DateTime dt = new DateTime(DateYearFieldAdd.getText(), DateMonthFieldAdd.getText(), DateDayFieldAdd.getText(), null, null);
+		String cat = (String) CategoryBoxAdd.getSelectedItem();
+
+		Expense ex = new Expense(null, f, null, dt, cat);
+
+		dbc.saveExpense(ex, uc.getCurrentUser().getUserID());
+		AddExpenseDialog.setVisible(false);
+		refreshTable();
+
 	}
 
 	private void CancelAdd(ActionEvent e) {
@@ -197,7 +208,17 @@ public class ExpenseMenu  {
 	}
 
 	private void ConfirmEdit(ActionEvent e) {
-		// TODO add your code here
+		
+		float f = Float.parseFloat(ExpenseAmountFieldEdit.getText());
+		DateTime dt = new DateTime(DateYearFieldEdit.getText(), DateMonthFieldEdit.getText(), DateDayFieldEdit.getText(), null, null);
+		String cat = (String) CategoryBoxEdit.getSelectedItem();
+
+		Expense ex = new Expense((String) ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 0), f, null, dt, cat);
+
+		dbc.updateExpense(ex);
+		EditExpenseDialog.setVisible(false);
+		refreshTable();
+
 	}
 
 	private void CancelEdit(ActionEvent e) {
@@ -205,7 +226,9 @@ public class ExpenseMenu  {
 	}
 
 	private void ConfirmDelete(ActionEvent e) {
-		// TODO add your code here
+		dbc.deleteExpense((String) ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 0));
+		DeleteExpenseDialog.setVisible(false);
+		refreshTable();
 	}
 
 	private void CancelDelete(ActionEvent e) {
