@@ -1,23 +1,11 @@
-package com.cbprog3.View;
+package com.cbprog3._JForm;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-
 import javax.swing.*;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-
-import com.cbprog3.Controller.DatabaseController;
-import com.cbprog3.Controller.ExpenseController;
-import com.cbprog3.Controller.UserController;
-import com.cbprog3.Model.Budget;
-import com.cbprog3.Model.DateTime;
-
 import net.miginfocom.swing.*;
 /*
- * Created by JFormDesigner on Fri Nov 28 16:05:21 SGT 2025
+ * Created by JFormDesigner on Fri Nov 28 22:40:12 SGT 2025
  */
 
 
@@ -27,226 +15,48 @@ import net.miginfocom.swing.*;
  */
 public class BudgetMenu  {
 
-	private UserController uc;
-	private DatabaseController dbc;
-	private ExpenseController ec;
-
-	private boolean backed = false;
-
-	public boolean getStatus(){
-		return backed;
-	}
-
-	public void setStatus(boolean b){
-		backed = b;
-	}
-
-	public BudgetMenu(UserController uc, DatabaseController dbc, ExpenseController ec){
-		this.uc = uc;
-		this.dbc = dbc;
-		this.ec = ec;
-
-		initComponents();
-	}
-
-	public void setVisible(boolean b){
-		BudgetMenu.setVisible(b);
-	}
-
-	public void refreshTable(){
-
-		ArrayList<Budget> budgetList = dbc.loadUserBudgets(uc.getCurrentUser().getUserID());
-
-		TableModel btm = new TableModel() {
-
-			@Override
-			public int getRowCount() {
-				return budgetList.size();
-			}
-
-			@Override
-			public int getColumnCount() {
-				return 5;
-			}
-
-			@Override
-			public String getColumnName(int columnIndex) {
-				switch(columnIndex){
-					case 0: return "Budget ID";
-					case 1: return "Budget Amount";
-					case 2: return "Budget Start Date";
-					case 3: return "Budget End Date";
-					case 4: return "Budget Category";
-				}
-				return "null";
-			}
-
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				switch(columnIndex){
-					case 0: return String.class;
-					case 1: return Float.class;
-					case 2: return String.class;
-					case 3: return String.class;
-					case 4: return String.class;
-				}
-				return String.class;
-			}
-
-			@Override
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return false;
-			}
-
-			@Override
-			public Object getValueAt(int rowIndex, int columnIndex) {
-				
-				Budget b = budgetList.get(rowIndex);
-
-				switch(columnIndex){
-					case 0: return b.getBudgetID();
-					case 1: return b.getBudgetAmt();
-					case 2: return b.getBudgetStart().getDateString();
-					case 3: return b.getBudgetEnd().getDateString();
-					case 4: return b.getBudgetCategory();
-				}
-				return null;
-
-			}
-
-			@Override
-			public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-				System.out.println("Attempted to set value at: (" + Integer.toString(rowIndex) + ", " + Integer.toString(columnIndex) + ")");
-			}
-
-			@Override
-			public void addTableModelListener(TableModelListener l) {
-			}
-
-			@Override
-			public void removeTableModelListener(TableModelListener l) {
-			}
-			
-		};
-
-		BudgetTable.setModel(btm);
-
-		TableColumnModel btcm = BudgetTable.getColumnModel();
-
-		for(int i = 0; i < btcm.getColumnCount(); i++){
-			btcm.getColumn(i).setMinWidth(150);
-		}
-
-		BudgetTable.setColumnModel(btcm);
-
-	}
-
-	private void Back(ActionEvent e) {
-		backed = true;
-	}
-
-	private void Refresh(ActionEvent e) {
-		refreshTable();
-	}
-
 	private void AddBudget(ActionEvent e) {
-		
-		BudgetAmountFieldAdd.setText("");
-		DateStartYearFieldAdd.setText("");
-		DateStartMonthFieldAdd.setText("");
-		DateStartDayFieldAdd.setText("");
-		DateEndYearFieldAdd.setText("");
-		DateEndMonthFieldAdd.setText("");
-		DateEndDayFieldAdd.setText("");
-
-		for(String s : ec.getCategories()){
-			CategoryBoxAdd.addItem(s);
-		}
-
-		AddBudgetDialog.setVisible(true);
-
+		// TODO add your code here
 	}
 
 	private void EditBudget(ActionEvent e) {
-		
-		if(BudgetTable.getSelectedRow() != -1){
-
-			BudgetAmountFieldEdit.setText(Float.toString((float)BudgetTable.getModel().getValueAt(BudgetTable.getSelectedRow(), 1)));
-
-			String dateStartString = (String) BudgetTable.getModel().getValueAt(BudgetTable.getSelectedRow(), 2);
-			String[] dStartStrings = dateStartString.split("/");
-			DateStartYearFieldEdit.setText(dStartStrings[2]);
-			DateStartMonthFieldEdit.setText(dStartStrings[0]);
-			DateStartDayFieldEdit.setText(dStartStrings[1]);
-
-			String dateEndString = (String) BudgetTable.getModel().getValueAt(BudgetTable.getSelectedRow(), 3);
-			String[] dEndStrings = dateEndString.split("/");
-			DateEndYearFieldEdit.setText(dEndStrings[2]);
-			DateEndMonthFieldEdit.setText(dEndStrings[0]);
-			DateEndDayFieldEdit.setText(dEndStrings[1]);
-
-			for(String s : ec.getCategories()){
-				CategoryBoxEdit.addItem(s);
-			}
-
-			CategoryBoxAdd.setSelectedItem((String)BudgetTable.getModel().getValueAt(BudgetTable.getSelectedRow(), 4));
-
-			EditBudgetDialog.setVisible(true);
-
-		}
-
+		// TODO add your code here
 	}
 
 	private void DeleteBudget(ActionEvent e) {
-		if(BudgetTable.getSelectedRow() != -1){
-			DeleteBudgetDialog.setVisible(true);
-		}
+		// TODO add your code here
+	}
+
+	private void Back(ActionEvent e) {
+		// TODO add your code here
+	}
+
+	private void Refresh(ActionEvent e) {
+		// TODO add your code here
 	}
 
 	private void ConfirmAdd(ActionEvent e) {
-		
-		float amt = Float.parseFloat(BudgetAmountFieldAdd.getText());
-		DateTime sdt = new DateTime(DateStartYearFieldAdd.getText(), DateStartMonthFieldAdd.getText(), DateStartDayFieldAdd.getText(), null, null);
-		DateTime edt = new DateTime(DateEndYearFieldAdd.getText(), DateEndMonthFieldAdd.getText(), DateEndDayFieldAdd.getText(), null, null);
-		String cat = (String) CategoryBoxAdd.getSelectedItem();
-
-		Budget b = new Budget(null, amt, sdt, edt, cat);
-
-		dbc.saveBudget(b, uc.getCurrentUser().getUserID());
-		AddBudgetDialog.setVisible(false);
-		refreshTable();
-
+		// TODO add your code here
 	}
 
 	private void CancelAdd(ActionEvent e) {
-		AddBudgetDialog.setVisible(false);
+		// TODO add your code here
 	}
 
 	private void ConfirmEdit(ActionEvent e) {
-		float amt = Float.parseFloat(BudgetAmountFieldEdit.getText());
-		DateTime sdt = new DateTime(DateStartYearFieldEdit.getText(), DateStartMonthFieldEdit.getText(), DateStartDayFieldEdit.getText(), null, null);
-		DateTime edt = new DateTime(DateEndYearFieldEdit.getText(), DateEndMonthFieldEdit.getText(), DateEndDayFieldEdit.getText(), null, null);
-		String cat = (String) CategoryBoxEdit.getSelectedItem();
-
-		Budget b = new Budget((String)BudgetTable.getModel().getValueAt(BudgetTable.getSelectedRow(), 0), amt, sdt, edt, cat);
-
-		dbc.updateBudget(b);
-		EditBudgetDialog.setVisible(false);
-		refreshTable();
+		// TODO add your code here
 	}
 
 	private void CancelEdit(ActionEvent e) {
-		EditBudgetDialog.setVisible(false);
+		// TODO add your code here
 	}
 
 	private void ConfirmDelete(ActionEvent e) {
-		dbc.deleteBudget((String) BudgetTable.getModel().getValueAt(BudgetTable.getSelectedRow(), 0));
-		DeleteBudgetDialog.setVisible(false);
-		refreshTable();
+		// TODO add your code here
 	}
 
 	private void CancelDelete(ActionEvent e) {
-		DeleteBudgetDialog.setVisible(false);
+		// TODO add your code here
 	}
 
 	private void initComponents() {

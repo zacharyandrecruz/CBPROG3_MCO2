@@ -201,12 +201,12 @@ public class ExpenseMenu  {
 			//---- ConfirmAdd ----
 			ConfirmAdd.setText("Confirm");
 			ConfirmAdd.addActionListener(e -> ConfirmAdd(e));
-			AddExpenseDialogContentPane.add(ConfirmAdd, "cell 2 3,alignx center,growx 0,wmax 75");
+			AddExpenseDialogContentPane.add(ConfirmAdd, "cell 1 3 2 1,alignx center,growx 0");
 
 			//---- CancelAdd ----
 			CancelAdd.setText("Cancel");
 			CancelAdd.addActionListener(e -> CancelAdd(e));
-			AddExpenseDialogContentPane.add(CancelAdd, "cell 3 3,alignx center,growx 0,wmax 75");
+			AddExpenseDialogContentPane.add(CancelAdd, "cell 3 3,alignx center,growx 0");
 			AddExpenseDialog.setSize(430, 200);
 			AddExpenseDialog.setLocationRelativeTo(null);
 		}
@@ -251,12 +251,12 @@ public class ExpenseMenu  {
 			//---- ConfirmEdit ----
 			ConfirmEdit.setText("Confirm");
 			ConfirmEdit.addActionListener(e -> ConfirmEdit(e));
-			EditExpenseDialogContentPane.add(ConfirmEdit, "cell 2 3,alignx center,growx 0,wmax 75");
+			EditExpenseDialogContentPane.add(ConfirmEdit, "cell 1 3 2 1,alignx center,growx 0");
 
 			//---- CancelEdit ----
 			CancelEdit.setText("Cancel");
 			CancelEdit.addActionListener(e -> CancelEdit(e));
-			EditExpenseDialogContentPane.add(CancelEdit, "cell 3 3,alignx center,growx 0,wmax 75");
+			EditExpenseDialogContentPane.add(CancelEdit, "cell 3 3,alignx center,growx 0");
 			EditExpenseDialog.setSize(430, 200);
 			EditExpenseDialog.setLocationRelativeTo(null);
 		}
@@ -265,6 +265,8 @@ public class ExpenseMenu  {
 		{
 			DeleteExpenseDialog.setTitle("Manage Expenses - Delete Expense");
 			DeleteExpenseDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			DeleteExpenseDialog.setResizable(false);
+			DeleteExpenseDialog.setType(Window.Type.POPUP);
 			Container DeleteExpenseDialogContentPane = DeleteExpenseDialog.getContentPane();
 			DeleteExpenseDialogContentPane.setLayout(new MigLayout(
 				"fill,hidemode 3",
@@ -278,6 +280,7 @@ public class ExpenseMenu  {
 			//---- DeleteLabel ----
 			DeleteLabel.setText("Are you sure you want to delete the selected expense?");
 			DeleteLabel.setFont(DeleteLabel.getFont().deriveFont(DeleteLabel.getFont().getSize() + 2f));
+			DeleteLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			DeleteExpenseDialogContentPane.add(DeleteLabel, "cell 0 0 2 1");
 
 			//---- ConfirmDelete ----
@@ -289,7 +292,7 @@ public class ExpenseMenu  {
 			CancelDelete.setText("Cancel");
 			CancelDelete.addActionListener(e -> CancelDelete(e));
 			DeleteExpenseDialogContentPane.add(CancelDelete, "cell 1 1,alignx center,growx 0,width 100::100");
-			DeleteExpenseDialog.setSize(350, 110);
+			DeleteExpenseDialog.setSize(430, 110);
 			DeleteExpenseDialog.setLocationRelativeTo(null);
 		}
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on

@@ -129,14 +129,14 @@ new FormModel {
 				"text": "Confirm"
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ConfirmAdd", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 2 3,alignx center,growx 0,wmax 75"
+				"value": "cell 1 3 2 1,alignx center,growx 0"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "CancelAdd"
 				"text": "Cancel"
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "CancelAdd", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 3,alignx center,growx 0,wmax 75"
+				"value": "cell 3 3,alignx center,growx 0"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 470, 5 )
@@ -202,14 +202,14 @@ new FormModel {
 				"text": "Confirm"
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ConfirmEdit", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 2 3,alignx center,growx 0,wmax 75"
+				"value": "cell 1 3 2 1,alignx center,growx 0"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "CancelEdit"
 				"text": "Cancel"
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "CancelEdit", true ) )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 3 3,alignx center,growx 0,wmax 75"
+				"value": "cell 3 3,alignx center,growx 0"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"size": #Dimension0
@@ -225,10 +225,13 @@ new FormModel {
 			"defaultCloseOperation": 2
 			"$sizePolicy": 1
 			"$locationPolicy": 1
+			"resizable": false
+			"type": enum java.awt.Window$Type POPUP
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "DeleteLabel"
 				"text": "Are you sure you want to delete the selected expense?"
 				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+				"horizontalAlignment": 0
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 0 2 1"
 			} )
@@ -248,7 +251,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 470, 425 )
-			"size": new java.awt.Dimension( 350, 110 )
+			"size": new java.awt.Dimension( 430, 110 )
 		} )
 	}
 }
