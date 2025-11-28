@@ -14,12 +14,22 @@ public class ExpenseController {
         this.categories = new ArrayList<>();
         initializeDefaultCategories();
     }
+
+    public void updateDatabases(UserController uc, DatabaseController dbc){
+
+        this.budgets = dbc.loadUserBudgets(uc.getCurrentUser().getUserID());
+        this.expenses = dbc.loadUserExpenses(uc.getCurrentUser().getUserID());
+
+    }
     
     private void initializeDefaultCategories() {
         categories.add("FOOD");
         categories.add("TRANSPORTATION");
         categories.add("ENTERTAINMENT");
-        categories.add("UTILITIES");
+        categories.add("UTILITY");
+        categories.add("GROCERY");
+        categories.add("SUBSCRIPTION");
+        categories.add("RENT");
         categories.add("SHOPPING");
         categories.add("HEALTHCARE");
         categories.add("EDUCATION");
