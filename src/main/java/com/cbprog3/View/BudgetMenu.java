@@ -23,7 +23,27 @@ import net.miginfocom.swing.*;
 
 
 /**
- * @author Acee
+ * The BudgetMenu class provides a graphical user interface for managing budgets
+ * in the Expense Tracker system. It allows users to perform CRUD operations
+ * (Create, Read, Update, Delete) on budgets through an intuitive table-based interface.
+ * 
+ * <p>This class implements a complete budget management system with the following features:
+ * <ul>
+ *   <li>Display all user budgets in a sortable, scrollable table</li>
+ *   <li>Add new budgets with amount, date ranges, and category selection</li>
+ *   <li>Edit existing budget details with pre-populated forms</li>
+ *   <li>Delete budgets with confirmation dialogs</li>
+ *   <li>Real-time table refresh after database operations</li>
+ *   <li>Navigation back to the main menu</li>
+ * </ul>
+ * 
+ * <p>The GUI is built using Swing components with MigLayout for flexible component positioning.
+ * The class follows the Model-View-Controller pattern, delegating data operations to controller classes.
+ * 
+ * @author Cruz, Zachary Andre A.
+ * @author Magdaluyo, Alaine Carlo R.
+ * @version 0.6
+ * 
  */
 public class BudgetMenu  {
 
@@ -33,14 +53,36 @@ public class BudgetMenu  {
 
 	private boolean backed = false;
 
+	/**
+	 * Returns the navigation status indicating whether the user has requested
+	 * to return to the main menu.
+	 * 
+	 * @return true if the Back button has been pressed and the menu should close,
+	 *         false otherwise
+	 */
 	public boolean getStatus(){
 		return backed;
 	}
 
+	/**
+	 * Sets the navigation status of the BudgetMenu.
+	 * This method is typically called by the main application controller
+	 * to reset the navigation state.
+	 * 
+	 * @param b the new navigation status to set
+	 */
 	public void setStatus(boolean b){
 		backed = b;
 	}
 
+	/**
+	 * Constructs a new BudgetMenu with the specified controllers.
+	 * Initializes the GUI components and prepares the menu for display.
+	 * 
+	 * @param uc the UserController for user-related operations and authentication
+	 * @param dbc the DatabaseController for database CRUD operations
+	 * @param ec the ExpenseController for category management and expense-related logic
+	 */
 	public BudgetMenu(UserController uc, DatabaseController dbc, ExpenseController ec){
 		this.uc = uc;
 		this.dbc = dbc;
@@ -49,10 +91,32 @@ public class BudgetMenu  {
 		initComponents();
 	}
 
+	/**
+	 * Sets the visibility of the BudgetMenu main window.
+	 * 
+	 * @param b true to make the window visible, false to hide it
+	 */
 	public void setVisible(boolean b){
 		BudgetMenu.setVisible(b);
 	}
 
+	/**
+	 * Refreshes the budget table with current data from the database.
+	 * Loads all budgets for the current user and updates the table model
+	 * to display the latest budget information in a formatted table.
+	 * 
+	 * <p>The table displays the following columns:
+	 * <ul>
+	 *   <li>Budget ID - Unique identifier for the budget</li>
+	 *   <li>Budget Amount - Monetary amount allocated for the budget</li>
+	 *   <li>Budget Start Date - Beginning date of the budget period</li>
+	 *   <li>Budget End Date - Ending date of the budget period</li>
+	 *   <li>Budget Category - Expense category the budget applies to</li>
+	 * </ul>
+	 * 
+	 * <p>Each column has a minimum width of 150 pixels to ensure proper content visibility.
+	 * The table is non-editable and displays horizontal and vertical grid lines.
+	 */
 	public void refreshTable(){
 
 		ArrayList<Budget> budgetList = dbc.loadUserBudgets(uc.getCurrentUser().getUserID());
@@ -141,14 +205,43 @@ public class BudgetMenu  {
 
 	}
 
+	/**
+	 * Handles the Back button action event.
+	 * Sets the navigation status to true, signaling to the main application
+	 * controller that the user wants to return to the main menu.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Back button
+	 */
 	private void Back(ActionEvent e) {
 		backed = true;
 	}
 
+	/**
+	 * Handles the Refresh button action event.
+	 * Reloads the budget table with current data from the database,
+	 * ensuring the display reflects any recent changes.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Refresh button
+	 */
 	private void Refresh(ActionEvent e) {
 		refreshTable();
 	}
 
+	/**
+	 * Handles the Add Budget button action event.
+	 * Prepares and displays the Add Budget dialog with cleared input fields
+	 * and a populated category dropdown containing all available expense categories.
+	 * 
+	 * <p>The dialog includes fields for:
+	 * <ul>
+	 *   <li>Budget amount (numeric input)</li>
+	 *   <li>Start date (year, month, day components)</li>
+	 *   <li>End date (year, month, day components)</li>
+	 *   <li>Category selection (dropdown)</li>
+	 * </ul>
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Add Budget button
+	 */
 	private void AddBudget(ActionEvent e) {
 		
 		BudgetAmountFieldAdd.setText("");
@@ -167,6 +260,19 @@ public class BudgetMenu  {
 
 	}
 
+	/**
+	 * Handles the Edit Budget button action event.
+	 * Prepares and displays the Edit Budget dialog with pre-populated fields
+	 * containing the currently selected budget's values.
+	 * 
+	 * <p>This method only executes if a budget row is selected in the table.
+	 * It parses the date strings from the table display to populate the
+	 * individual date component fields (year, month, day).
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Edit Budget button
+	 * @throws NumberFormatException if the budget amount cannot be parsed from the table
+	 * @throws ArrayIndexOutOfBoundsException if the date string format is invalid
+	 */
 	private void EditBudget(ActionEvent e) {
 		
 		if(BudgetTable.getSelectedRow() != -1){
@@ -197,12 +303,38 @@ public class BudgetMenu  {
 
 	}
 
+	/**
+	 * Handles the Delete Budget button action event.
+	 * Displays a confirmation dialog for budget deletion to prevent accidental data loss.
+	 * 
+	 * <p>This method only executes if a budget row is selected in the table.
+	 * The actual deletion occurs only after user confirmation in the dialog.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Delete Budget button
+	 */
 	private void DeleteBudget(ActionEvent e) {
 		if(BudgetTable.getSelectedRow() != -1){
 			DeleteBudgetDialog.setVisible(true);
 		}
 	}
 
+	/**
+	 * Handles the Confirm Add button action event in the Add Budget dialog.
+	 * Creates a new Budget object from the dialog input fields and saves it to the database.
+	 * 
+	 * <p>Process flow:
+	 * <ol>
+	 *   <li>Parse budget amount from text field</li>
+	 *   <li>Create DateTime objects for start and end dates</li>
+	 *   <li>Get selected category from dropdown</li>
+	 *   <li>Create new Budget object (ID generated by database)</li>
+	 *   <li>Save budget to database via DatabaseController</li>
+	 *   <li>Close dialog and refresh table</li>
+	 * </ol>
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Confirm Add button
+	 * @throws NumberFormatException if the budget amount field contains invalid numeric data
+	 */
 	private void ConfirmAdd(ActionEvent e) {
 		
 		float amt = Float.parseFloat(BudgetAmountFieldAdd.getText());
@@ -218,10 +350,27 @@ public class BudgetMenu  {
 
 	}
 
+	/**
+	 * Handles the Cancel Add button action event in the Add Budget dialog.
+	 * Closes the dialog without saving any changes or creating a new budget.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Cancel Add button
+	 */
 	private void CancelAdd(ActionEvent e) {
 		AddBudgetDialog.setVisible(false);
 	}
 
+	/**
+	 * Handles the Confirm Edit button action event in the Edit Budget dialog.
+	 * Updates the selected budget with new values from the dialog input fields
+	 * and persists the changes to the database.
+	 * 
+	 * <p>Retains the original budget ID while updating all other fields
+	 * with the new values provided by the user.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Confirm Edit button
+	 * @throws NumberFormatException if the budget amount field contains invalid numeric data
+	 */
 	private void ConfirmEdit(ActionEvent e) {
 		float amt = Float.parseFloat(BudgetAmountFieldEdit.getText());
 		DateTime sdt = new DateTime(DateStartYearFieldEdit.getText(), DateStartMonthFieldEdit.getText(), DateStartDayFieldEdit.getText(), null, null);
@@ -235,19 +384,48 @@ public class BudgetMenu  {
 		refreshTable();
 	}
 
+	/**
+	 * Handles the Cancel Edit button action event in the Edit Budget dialog.
+	 * Closes the dialog without saving any changes to the selected budget.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Cancel Edit button
+	 */
 	private void CancelEdit(ActionEvent e) {
 		EditBudgetDialog.setVisible(false);
 	}
 
+	/**
+	 * Handles the Confirm Delete button action event in the Delete Budget dialog.
+	 * Permanently deletes the selected budget from the database using its budget ID
+	 * and refreshes the table to reflect the change.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Confirm Delete button
+	 */
 	private void ConfirmDelete(ActionEvent e) {
 		dbc.deleteBudget((String) BudgetTable.getModel().getValueAt(BudgetTable.getSelectedRow(), 0));
 		DeleteBudgetDialog.setVisible(false);
 		refreshTable();
 	}
 
+	/**
+	 * Handles the Cancel Delete button action event in the Delete Budget dialog.
+	 * Closes the confirmation dialog without performing the deletion operation.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Cancel Delete button
+	 */
 	private void CancelDelete(ActionEvent e) {
 		DeleteBudgetDialog.setVisible(false);
 	}
+
+	/**
+	 * Initializes all GUI components using JFormDesigner-generated code.
+	 * This method sets up the main window, dialogs, and all Swing components
+	 * with their respective layouts, sizes, positions, and event handlers.
+	 * 
+	 * <p><strong>Note:</strong> This method is automatically generated by JFormDesigner
+	 * and should not be modified manually. Any changes to the GUI layout should
+	 * be made through the JFormDesigner visual editor.
+	 */
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off

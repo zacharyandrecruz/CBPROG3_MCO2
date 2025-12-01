@@ -22,7 +22,34 @@ import net.miginfocom.swing.*;
 
 
 /**
- * @author Acee
+ * The InsightMenu class provides a comprehensive financial analytics dashboard
+ * for the Expense Tracker system. It displays various insights and summaries
+ * of expense data through multiple synchronized table views and calculated metrics.
+ * 
+ * <p>This class implements a multi-panel dashboard with the following analytical features:
+ * <ul>
+ *   <li>Daily expense tracking with date-wise breakdown and average calculation</li>
+ *   <li>Monthly expense overview (interface prepared for future implementation)</li>
+ *   <li>Complete expense listing with all transaction details</li>
+ *   <li>Category-based expense totals (interface prepared for future implementation)</li>
+ *   <li>Real-time calculation of daily spending averages</li>
+ *   <li>Total expense amount tracking</li>
+ * </ul>
+ * 
+ * <p>The dashboard is organized into four main sections:
+ * <ol>
+ *   <li>Daily Expenses - Shows expenses grouped by day with daily average</li>
+ *   <li>Monthly Expenses - Reserved for monthly expense analysis</li>
+ *   <li>Total Expenses - Displays all individual expense records</li>
+ *   <li>Category Totals - Reserved for category-based expense breakdown</li>
+ * </ol>
+ * 
+ * <p>The GUI uses Swing components with MigLayout for a responsive multi-panel layout
+ * and follows the Model-View-Controller pattern for data management.
+ *
+ * @author Cruz, Zachary Andre A.
+ * @author Magdaluyo, Alaine Carlo R. 
+ * @version 0.6
  */
 public class InsightMenu  {
 
@@ -32,14 +59,36 @@ public class InsightMenu  {
 
 	private boolean backed = false;
 
+	/**
+	 * Returns the navigation status indicating whether the user has requested
+	 * to return to the main menu.
+	 * 
+	 * @return true if the Back button has been pressed and the menu should close,
+	 *         false otherwise
+	 */
 	public boolean getStatus(){
 		return backed;
 	}
 
+	/**
+	 * Sets the navigation status of the InsightMenu.
+	 * This method is typically called by the main application controller
+	 * to reset the navigation state after returning to the main menu.
+	 * 
+	 * @param b the new navigation status to set
+	 */
 	public void setStatus(boolean b){
 		backed = b;
 	}
 
+	/**
+	 * Constructs a new InsightMenu with the specified controllers.
+	 * Initializes the GUI components and prepares the analytics dashboard for display.
+	 * 
+	 * @param uc the UserController for user-related operations and authentication
+	 * @param dbc the DatabaseController for loading expense data from the database
+	 * @param ec the ExpenseController for expense calculations and analytics
+	 */
 	public InsightMenu(UserController uc, DatabaseController dbc, ExpenseController ec){
 		this.uc = uc;
 		this.dbc = dbc;
@@ -48,10 +97,45 @@ public class InsightMenu  {
 		initComponents();
 	}
 
+	/**
+	 * Sets the visibility of the InsightMenu main window.
+	 * 
+	 * @param b true to make the window visible, false to hide it
+	 */
 	public void setVisible(boolean b){
 		InsightMenu.setVisible(b);
 	}
 
+	/**
+	 * Refreshes all tables and analytical data in the insight dashboard.
+	 * This method performs a comprehensive update of all displayed information:
+	 * 
+	 * <p>Update process includes:
+	 * <ol>
+	 *   <li>Updates expense controller with latest database information</li>
+	 *   <li>Refreshes daily expense table with date-wise expense totals</li>
+	 *   <li>Calculates and displays daily average expense</li>
+	 *   <li>Updates total expenses table with all individual expense records</li>
+	 *   <li>Calculates and displays total expense amount</li>
+	 *   <li>Prepares interfaces for monthly and category-based analysis (future implementation)</li>
+	 * </ol>
+	 * 
+	 * <p>The daily expense table displays:
+	 * <ul>
+	 *   <li>Expense Date - The specific date of expenses</li>
+	 *   <li>Expense Amount - Total amount spent on that date</li>
+	 * </ul>
+	 * 
+	 * <p>The total expenses table displays:
+	 * <ul>
+	 *   <li>Expense ID - Unique identifier for each expense</li>
+	 *   <li>Expense Amount - Individual expense amount</li>
+	 *   <li>Expense Date - Date when expense occurred</li>
+	 *   <li>Expense Category - Category classification</li>
+	 * </ul>
+	 * 
+	 * <p>All tables have a minimum column width of 150 pixels for consistent display.
+	 */
 	public void refreshTables(){
 
 		ec.updateDatabases(uc, dbc);
@@ -225,10 +309,27 @@ public class InsightMenu  {
 
 	}
 
+	/**
+	 * Handles the Refresh Tables button action event.
+	 * Reloads all analytical data and refreshes all table displays to reflect
+	 * the most current expense information from the database.
+	 * 
+	 * <p>This method ensures that all calculated metrics (daily averages, totals)
+	 * and table contents are synchronized with the latest database state.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Refresh Tables button
+	 */
 	private void RefreshTables(ActionEvent e) {
 		refreshTables();
 	}
 
+	/**
+	 * Handles the Back button action event.
+	 * Sets the navigation status to true, signaling to the main application
+	 * controller that the user wants to return to the main menu.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Back button
+	 */
 	private void Back(ActionEvent e) {
 		backed = true;
 	}

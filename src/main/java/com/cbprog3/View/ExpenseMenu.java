@@ -24,7 +24,29 @@ import net.miginfocom.swing.*;
 
 
 /**
- * @author Acee
+ * The ExpenseMenu class provides a graphical user interface for managing expenses
+ * in the Expense Tracker system. It enables users to perform comprehensive CRUD operations
+ * (Create, Read, Update, Delete) on expenses through an intuitive table-based interface.
+ * 
+ * <p>This class implements a complete expense management system with the following features:
+ * <ul>
+ *   <li>Display all user expenses in a sortable, scrollable table with grid lines</li>
+ *   <li>Add new expenses with amount, date, and category selection</li>
+ *   <li>Edit existing expense details with pre-populated forms</li>
+ *   <li>Delete expenses with confirmation dialogs to prevent accidental data loss</li>
+ *   <li>Real-time table refresh after database operations</li>
+ *   <li>Navigation back to the main menu</li>
+ *   <li>Support for categorized expense tracking</li>
+ * </ul>
+ * 
+ * <p>The GUI is built using Swing components with MigLayout for flexible component positioning.
+ * The class follows the Model-View-Controller pattern, delegating data operations to controller classes
+ * and maintaining separation between UI logic and business logic.
+ * 
+ * @author Cruz, Zachary Andre A.
+ * @author Magdaluyo, Alaine Carlo R.
+ * @version 0.6
+ *
  */
 public class ExpenseMenu  {
 
@@ -34,14 +56,36 @@ public class ExpenseMenu  {
 
 	private boolean backed = false;
 
+	/**
+	 * Returns the navigation status indicating whether the user has requested
+	 * to return to the main menu.
+	 * 
+	 * @return true if the Back button has been pressed and the menu should close,
+	 *         false otherwise
+	 */
 	public boolean getStatus(){
 		return backed;
 	}
 
+	/**
+	 * Sets the navigation status of the ExpenseMenu.
+	 * This method is typically called by the main application controller
+	 * to reset the navigation state after returning to the main menu.
+	 * 
+	 * @param b the new navigation status to set
+	 */
 	public void setStatus(boolean b){
 		backed = b;
 	}
 
+	/**
+	 * Constructs a new ExpenseMenu with the specified controllers.
+	 * Initializes the GUI components and prepares the menu for display.
+	 * 
+	 * @param uc the UserController for user-related operations and authentication
+	 * @param dbc the DatabaseController for database CRUD operations on expenses
+	 * @param ec the ExpenseController for category management and expense-related business logic
+	 */
 	public ExpenseMenu(UserController uc, DatabaseController dbc, ExpenseController ec){
 		this.uc = uc;
 		this.dbc = dbc;
@@ -50,10 +94,32 @@ public class ExpenseMenu  {
 		initComponents();
 	}
 
+	/**
+	 * Sets the visibility of the ExpenseMenu main window.
+	 * 
+	 * @param b true to make the window visible, false to hide it
+	 */
 	public void setVisible(boolean b){
 		ExpenseMenu.setVisible(b);
 	}
 
+	/**
+	 * Refreshes the expense table with current data from the database.
+	 * Loads all expenses for the current user and updates the table model
+	 * to display the latest expense information in a formatted table.
+	 * 
+	 * <p>The table displays the following columns:
+	 * <ul>
+	 *   <li>Expense ID - Unique identifier for the expense</li>
+	 *   <li>Expense Amount - Monetary amount of the expense</li>
+	 *   <li>Expense Date - Date when the expense occurred</li>
+	 *   <li>Expense Category - Category classification of the expense</li>
+	 * </ul>
+	 * 
+	 * <p>Each column has a minimum width of 150 pixels to ensure proper content visibility.
+	 * The table is non-editable and displays horizontal and vertical grid lines for better readability.
+	 * The table uses single interval selection mode and auto-resize is disabled to maintain column widths.
+	 */
 	public void refreshTable(){
 
 		ArrayList<Expense> expenseList = dbc.loadUserExpenses(uc.getCurrentUser().getUserID());
@@ -139,6 +205,20 @@ public class ExpenseMenu  {
 
 	}
 
+	/**
+	 * Handles the Add Expense button action event.
+	 * Prepares and displays the Add Expense dialog with cleared input fields
+	 * and a populated category dropdown containing all available expense categories.
+	 * 
+	 * <p>The dialog includes fields for:
+	 * <ul>
+	 *   <li>Expense amount (numeric input)</li>
+	 *   <li>Expense date (year, month, day components in separate fields)</li>
+	 *   <li>Category selection (dropdown with all available categories)</li>
+	 * </ul>
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Add Expense button
+	 */
 	private void AddExpense(ActionEvent e) {
 		ExpenseAmountFieldAdd.setText("");
 		DateYearFieldAdd.setText("");
@@ -152,6 +232,19 @@ public class ExpenseMenu  {
 		AddExpenseDialog.setVisible(true);
 	}
 
+	/**
+	 * Handles the Edit Expense button action event.
+	 * Prepares and displays the Edit Expense dialog with pre-populated fields
+	 * containing the currently selected expense's values.
+	 * 
+	 * <p>This method only executes if an expense row is selected in the table.
+	 * It parses the date string from the table display (MM/DD/YYYY format) to populate
+	 * the individual date component fields (year, month, day).
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Edit Expense button
+	 * @throws NumberFormatException if the expense amount cannot be parsed from the table
+	 * @throws ArrayIndexOutOfBoundsException if the date string format is invalid
+	 */
 	private void EditExpense(ActionEvent e) {
 		
 		if(ExpenseTable.getSelectedRow() != -1){
@@ -175,20 +268,60 @@ public class ExpenseMenu  {
 
 	}
 
+	/**
+	 * Handles the Delete Expense button action event.
+	 * Displays a confirmation dialog for expense deletion to prevent accidental data loss.
+	 * 
+	 * <p>This method only executes if an expense row is selected in the table.
+	 * The actual deletion occurs only after user confirmation in the dialog.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Delete Expense button
+	 */
 	private void DeleteExpense(ActionEvent e) {
 		if(ExpenseTable.getSelectedRow() != -1){
 			DeleteExpenseDialog.setVisible(true);
 		}
 	}
 
+	/**
+	 * Handles the Back button action event.
+	 * Sets the navigation status to true, signaling to the main application
+	 * controller that the user wants to return to the main menu.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Back button
+	 */
 	private void Back(ActionEvent e) {
 		backed = true;
 	}
 
+	/**
+	 * Handles the Refresh button action event.
+	 * Reloads the expense table with current data from the database,
+	 * ensuring the display reflects any recent changes made to expenses.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Refresh button
+	 */
 	private void Refresh(ActionEvent e) {
 		refreshTable();
 	}
 
+	/**
+	 * Handles the Confirm Add button action event in the Add Expense dialog.
+	 * Creates a new Expense object from the dialog input fields and saves it to the database.
+	 * 
+	 * <p>Process flow:
+	 * <ol>
+	 *   <li>Parse expense amount from text field</li>
+	 *   <li>Create DateTime object from date component fields</li>
+	 *   <li>Get selected category from dropdown</li>
+	 *   <li>Create new Expense object (ID generated by database, currency set to null for default)</li>
+	 *   <li>Save expense to database via DatabaseController</li>
+	 *   <li>Close dialog and refresh table to show new expense</li>
+	 * </ol>
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Confirm Add button
+	 * @throws NumberFormatException if the expense amount field contains invalid numeric data
+	 */
 	private void ConfirmAdd(ActionEvent e) {
 		
 		float f = Float.parseFloat(ExpenseAmountFieldAdd.getText());
@@ -203,10 +336,28 @@ public class ExpenseMenu  {
 
 	}
 
+	/**
+	 * Handles the Cancel Add button action event in the Add Expense dialog.
+	 * Closes the dialog without saving any changes or creating a new expense.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Cancel Add button
+	 */
 	private void CancelAdd(ActionEvent e) {
 		AddExpenseDialog.setVisible(false);
 	}
 
+	/**
+	 * Handles the Confirm Edit button action event in the Edit Expense dialog.
+	 * Updates the selected expense with new values from the dialog input fields
+	 * and persists the changes to the database.
+	 * 
+	 * <p>Retains the original expense ID while updating all other fields
+	 * with the new values provided by the user. The currency field remains null
+	 * (using default currency).
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Confirm Edit button
+	 * @throws NumberFormatException if the expense amount field contains invalid numeric data
+	 */
 	private void ConfirmEdit(ActionEvent e) {
 		
 		float f = Float.parseFloat(ExpenseAmountFieldEdit.getText());
@@ -221,19 +372,57 @@ public class ExpenseMenu  {
 
 	}
 
+	/**
+	 * Handles the Cancel Edit button action event in the Edit Expense dialog.
+	 * Closes the dialog without saving any changes to the selected expense.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Cancel Edit button
+	 */
 	private void CancelEdit(ActionEvent e) {
 		EditExpenseDialog.setVisible(false);
 	}
 
+	/**
+	 * Handles the Confirm Delete button action event in the Delete Expense dialog.
+	 * Permanently deletes the selected expense from the database using its expense ID
+	 * and refreshes the table to reflect the change.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Confirm Delete button
+	 */
 	private void ConfirmDelete(ActionEvent e) {
 		dbc.deleteExpense((String) ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 0));
 		DeleteExpenseDialog.setVisible(false);
 		refreshTable();
 	}
 
+	/**
+	 * Handles the Cancel Delete button action event in the Delete Expense dialog.
+	 * Closes the confirmation dialog without performing the deletion operation.
+	 * 
+	 * @param e the ActionEvent triggered by clicking the Cancel Delete button
+	 */
 	private void CancelDelete(ActionEvent e) {
 		DeleteExpenseDialog.setVisible(false);
 	}
+
+	/**
+	 * Initializes all GUI components using JFormDesigner-generated code.
+	 * This method sets up the main window, dialogs, and all Swing components
+	 * with their respective layouts, sizes, positions, and event handlers.
+	 * 
+	 * <p>The GUI includes:
+	 * <ul>
+	 *   <li>Main expense table with scroll pane</li>
+	 *   <li>Action buttons (Add, Edit, Delete, Refresh, Back)</li>
+	 *   <li>Add Expense dialog with input fields</li>
+	 *   <li>Edit Expense dialog with pre-populated fields</li>
+	 *   <li>Delete Expense confirmation dialog</li>
+	 * </ul>
+	 * 
+	 * <p><strong>Note:</strong> This method is automatically generated by JFormDesigner
+	 * and should not be modified manually. Any changes to the GUI layout should
+	 * be made through the JFormDesigner visual editor.
+	 */
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
