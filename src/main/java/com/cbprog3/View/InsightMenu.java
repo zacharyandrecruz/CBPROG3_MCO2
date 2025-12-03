@@ -219,6 +219,81 @@ public class InsightMenu  {
 		DailyAverageLabel.setText("Average Daily Expense: " + ec.computeDailyAve());
 
 		//MonthlyAve
+		ArrayList<Float> monthlyExpenseList = ec.getMonthlyExpenses();
+		ArrayList<String> monthExpenseList = ec.getMonthlyExpensesDate();
+
+		TableModel metm = new TableModel() {
+
+			@Override
+			public int getRowCount() {
+				return monthlyExpenseList.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 2;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+				switch(columnIndex){
+					case 0: return "Expense Date";
+					case 1: return "Expense Amount";
+				}
+				return "null";
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				switch(columnIndex){
+					case 0: return String.class;
+					case 1: return Float.class;
+				}
+				return String.class;
+			}
+
+			@Override
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				return false;
+			}
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+
+				switch(columnIndex){
+					case 0: return monthExpenseList.get(rowIndex);
+					case 1: return monthlyExpenseList.get(rowIndex);
+				}
+				return null;
+
+			}
+
+			@Override
+			public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+				System.out.println("Attempted to set value at: (" + Integer.toString(rowIndex) + ", " + Integer.toString(columnIndex) + ")");
+			}
+
+			@Override
+			public void addTableModelListener(TableModelListener l) {
+			}
+
+			@Override
+			public void removeTableModelListener(TableModelListener l) {
+			}
+			
+		};
+
+		MonthlyTable.setModel(metm);
+
+		TableColumnModel mtcm = DailyTable.getColumnModel();
+
+		for(int i = 0; i < mtcm.getColumnCount(); i++){
+			mtcm.getColumn(i).setMinWidth(150);
+		}
+		
+		MonthlyTable.setColumnModel(mtcm);
+
+		MonthlyAverageLabel.setText("Average Daily Expense: " + ec.computeMonthlyAverage());
 
 		//Total
 
@@ -306,6 +381,95 @@ public class InsightMenu  {
 		TotalAverageLabel.setText("Total Expense Amount: " + ec.getTotalExpenses());
 
 		//Total (Category)
+		ArrayList<Float> categoryTotal = new ArrayList<>();
+
+		for(String c : ec.getCategories()){
+			categoryTotal.add(ec.getTotalCategoryExpense(c));
+		}
+
+		TableModel ctetm = new TableModel() {
+
+			@Override
+			public int getRowCount() {
+				return categoryTotal.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 2;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+				switch(columnIndex){
+					case 0: return "Category";
+					case 1: return "Total Amount";
+				}
+				return "null";
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				switch(columnIndex){
+					case 0: return String.class;
+					case 1: return Float.class;
+				}
+				return String.class;
+			}
+
+			@Override
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				return false;
+			}
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				
+				Float f = categoryTotal.get(rowIndex);
+
+				switch(columnIndex){
+					case 0: return ec.getCategories().get(rowIndex);
+					case 1: return f;
+				}
+				return null;
+
+			}
+
+			@Override
+			public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+				System.out.println("Attempted to set value at: (" + Integer.toString(rowIndex) + ", " + Integer.toString(columnIndex) + ")");
+			}
+
+			@Override
+			public void addTableModelListener(TableModelListener l) {
+			}
+
+			@Override
+			public void removeTableModelListener(TableModelListener l) {
+			}
+			
+		};
+
+		CategoryTotalTable.setModel(ctetm);
+
+		TableColumnModel cttcm = CategoryTotalTable.getColumnModel();
+
+		for(int i = 0; i < cttcm.getColumnCount(); i++){
+			cttcm.getColumn(i).setMinWidth(150);
+		}
+
+		CategoryTotalTable.setColumnModel(cttcm);
+
+		float aveCat = 0;
+		float t = 0;
+
+		for(Float f : categoryTotal){
+			t += f;
+		}
+
+		aveCat = t/categoryTotal.size();
+
+		TotalAverageLabel.setText("Average Category Expense Amount: " + aveCat);
 
 	}
 

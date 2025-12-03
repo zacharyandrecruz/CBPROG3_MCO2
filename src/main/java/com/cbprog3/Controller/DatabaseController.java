@@ -17,9 +17,9 @@ import com.cbprog3.Model.User;
 public class DatabaseController {
     private Connection connection;
     
-    private static final String URL = "jdbc:mysql://localhost:3306/expense_trackerdb";
-    private static final String USERNAME = "user1";
-    private static final String PASSWORD = "password";
+    private static final String URL = "jdbc:mysql://localhost:3306/mco2_db";
+    private static final String USERNAME = "acee";
+    private static final String PASSWORD = "09212005";
     
     public DatabaseController() {
         connectToDatabase();

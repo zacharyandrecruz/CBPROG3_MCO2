@@ -65,6 +65,8 @@ public class ExpenseMenu  {
 		ExpenseMenu = new JFrame();
 		ExpensePane = new JScrollPane();
 		ExpenseTable = new JTable();
+		DigitalExpensePane = new JScrollPane();
+		DigitalExpenseTable = new JTable();
 		AddExpense = new JButton();
 		EditExpense = new JButton();
 		DeleteExpense = new JButton();
@@ -79,6 +81,8 @@ public class ExpenseMenu  {
 		DateDayFieldAdd = new JTextField();
 		ExpenseCategoryLabelAdd = new JLabel();
 		CategoryBoxAdd = new JComboBox();
+		ExpenseBankLabelAdd = new JLabel();
+		BankBoxAdd = new JComboBox();
 		ConfirmAdd = new JButton();
 		CancelAdd = new JButton();
 		EditExpenseDialog = new JDialog();
@@ -90,6 +94,8 @@ public class ExpenseMenu  {
 		DateDayFieldEdit = new JTextField();
 		EditCategoryLabel = new JLabel();
 		CategoryBoxEdit = new JComboBox();
+		EditBankLabel = new JLabel();
+		BankBoxEdit = new JComboBox();
 		ConfirmEdit = new JButton();
 		CancelEdit = new JButton();
 		DeleteExpenseDialog = new JDialog();
@@ -108,6 +114,7 @@ public class ExpenseMenu  {
 				// columns
 				"[grow,fill]" +
 				"[grow,fill]" +
+				"[fill]" +
 				"[grow,fill]" +
 				"[grow,fill]" +
 				"[grow,fill]",
@@ -127,7 +134,19 @@ public class ExpenseMenu  {
 				ExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				ExpensePane.setViewportView(ExpenseTable);
 			}
-			ExpenseMenuContentPane.add(ExpensePane, "cell 0 0 5 2");
+			ExpenseMenuContentPane.add(ExpensePane, "cell 0 0 3 2");
+
+			//======== DigitalExpensePane ========
+			{
+
+				//---- DigitalExpenseTable ----
+				DigitalExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				DigitalExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+				DigitalExpenseTable.setShowHorizontalLines(true);
+				DigitalExpenseTable.setShowVerticalLines(true);
+				DigitalExpensePane.setViewportView(DigitalExpenseTable);
+			}
+			ExpenseMenuContentPane.add(DigitalExpensePane, "cell 3 0 3 2,wmax 300");
 
 			//---- AddExpense ----
 			AddExpense.setText("Add");
@@ -145,18 +164,18 @@ public class ExpenseMenu  {
 			DeleteExpense.setText("Delete");
 			DeleteExpense.setFont(DeleteExpense.getFont().deriveFont(DeleteExpense.getFont().getSize() + 3f));
 			DeleteExpense.addActionListener(e -> DeleteExpense(e));
-			ExpenseMenuContentPane.add(DeleteExpense, "cell 2 2 1 2,alignx center,growx 0,hmin 35");
+			ExpenseMenuContentPane.add(DeleteExpense, "cell 2 2 2 2,alignx center,growx 0,hmin 35");
 
 			//---- BackButton ----
 			BackButton.setText("Back");
 			BackButton.setFont(BackButton.getFont().deriveFont(BackButton.getFont().getSize() + 2f));
 			BackButton.addActionListener(e -> Back(e));
-			ExpenseMenuContentPane.add(BackButton, "cell 4 2 1 2,alignx center,growx 0,wmax 75,hmin 35");
+			ExpenseMenuContentPane.add(BackButton, "cell 5 2 1 2,alignx center,growx 0,wmax 75,hmin 35");
 
 			//---- RefreshButton ----
 			RefreshButton.setText("Refresh");
 			RefreshButton.addActionListener(e -> Refresh(e));
-			ExpenseMenuContentPane.add(RefreshButton, "cell 3 2 1 2,alignx center,growx 0,wmin 90,hmin 35");
+			ExpenseMenuContentPane.add(RefreshButton, "cell 4 2 1 2,alignx center,growx 0,wmin 90,hmin 35");
 			ExpenseMenu.setSize(450, 530);
 			ExpenseMenu.setLocationRelativeTo(null);
 		}
@@ -179,6 +198,7 @@ public class ExpenseMenu  {
 				"[]" +
 				"[]" +
 				"[]" +
+				"[]" +
 				"[]"));
 
 			//---- ExpenseAmountLabelAdd ----
@@ -198,15 +218,20 @@ public class ExpenseMenu  {
 			AddExpenseDialogContentPane.add(ExpenseCategoryLabelAdd, "cell 0 2");
 			AddExpenseDialogContentPane.add(CategoryBoxAdd, "cell 1 2 3 1");
 
+			//---- ExpenseBankLabelAdd ----
+			ExpenseBankLabelAdd.setText("Bank:");
+			AddExpenseDialogContentPane.add(ExpenseBankLabelAdd, "cell 0 3");
+			AddExpenseDialogContentPane.add(BankBoxAdd, "cell 1 3 3 1");
+
 			//---- ConfirmAdd ----
 			ConfirmAdd.setText("Confirm");
 			ConfirmAdd.addActionListener(e -> ConfirmAdd(e));
-			AddExpenseDialogContentPane.add(ConfirmAdd, "cell 1 3 2 1,alignx center,growx 0");
+			AddExpenseDialogContentPane.add(ConfirmAdd, "cell 1 4 2 1,alignx center,growx 0");
 
 			//---- CancelAdd ----
 			CancelAdd.setText("Cancel");
 			CancelAdd.addActionListener(e -> CancelAdd(e));
-			AddExpenseDialogContentPane.add(CancelAdd, "cell 3 3,alignx center,growx 0");
+			AddExpenseDialogContentPane.add(CancelAdd, "cell 3 4,alignx center,growx 0");
 			AddExpenseDialog.setSize(430, 200);
 			AddExpenseDialog.setLocationRelativeTo(null);
 		}
@@ -229,6 +254,7 @@ public class ExpenseMenu  {
 				"[]" +
 				"[]" +
 				"[]" +
+				"[]" +
 				"[]"));
 
 			//---- EditAmountLabel ----
@@ -248,15 +274,20 @@ public class ExpenseMenu  {
 			EditExpenseDialogContentPane.add(EditCategoryLabel, "cell 0 2");
 			EditExpenseDialogContentPane.add(CategoryBoxEdit, "cell 1 2 3 1");
 
+			//---- EditBankLabel ----
+			EditBankLabel.setText("Bank:");
+			EditExpenseDialogContentPane.add(EditBankLabel, "cell 0 3");
+			EditExpenseDialogContentPane.add(BankBoxEdit, "cell 1 3 3 1");
+
 			//---- ConfirmEdit ----
 			ConfirmEdit.setText("Confirm");
 			ConfirmEdit.addActionListener(e -> ConfirmEdit(e));
-			EditExpenseDialogContentPane.add(ConfirmEdit, "cell 1 3 2 1,alignx center,growx 0");
+			EditExpenseDialogContentPane.add(ConfirmEdit, "cell 1 4 2 1,alignx center,growx 0");
 
 			//---- CancelEdit ----
 			CancelEdit.setText("Cancel");
 			CancelEdit.addActionListener(e -> CancelEdit(e));
-			EditExpenseDialogContentPane.add(CancelEdit, "cell 3 3,alignx center,growx 0");
+			EditExpenseDialogContentPane.add(CancelEdit, "cell 3 4,alignx center,growx 0");
 			EditExpenseDialog.setSize(430, 200);
 			EditExpenseDialog.setLocationRelativeTo(null);
 		}
@@ -303,6 +334,8 @@ public class ExpenseMenu  {
 	private JFrame ExpenseMenu;
 	private JScrollPane ExpensePane;
 	private JTable ExpenseTable;
+	private JScrollPane DigitalExpensePane;
+	private JTable DigitalExpenseTable;
 	private JButton AddExpense;
 	private JButton EditExpense;
 	private JButton DeleteExpense;
@@ -317,6 +350,8 @@ public class ExpenseMenu  {
 	private JTextField DateDayFieldAdd;
 	private JLabel ExpenseCategoryLabelAdd;
 	private JComboBox CategoryBoxAdd;
+	private JLabel ExpenseBankLabelAdd;
+	private JComboBox BankBoxAdd;
 	private JButton ConfirmAdd;
 	private JButton CancelAdd;
 	private JDialog EditExpenseDialog;
@@ -328,6 +363,8 @@ public class ExpenseMenu  {
 	private JTextField DateDayFieldEdit;
 	private JLabel EditCategoryLabel;
 	private JComboBox CategoryBoxEdit;
+	private JLabel EditBankLabel;
+	private JComboBox BankBoxEdit;
 	private JButton ConfirmEdit;
 	private JButton CancelEdit;
 	private JDialog DeleteExpenseDialog;

@@ -35,13 +35,20 @@ public class MainMenu  {
 		// TODO add your code here
 	}
 
+	private void Bank(ActionEvent e) {
+		// TODO add your code here
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
 		// Generated using JFormDesigner Evaluation license - Acweafa
 		MainMenu = new JFrame();
 		UserLabel = new JLabel();
+		BankButton = new JButton();
 		ExpensePane = new JScrollPane();
 		ExpenseTable = new JTable();
+		DigitalExpensePane = new JScrollPane();
+		DigitalExpenseTable = new JTable();
 		BudgetPane = new JScrollPane();
 		BudgetTable = new JTable();
 		ExpenseButton = new JButton();
@@ -80,6 +87,11 @@ public class MainMenu  {
 			UserLabel.setText("Logged in as: ");
 			MainMenuContentPane.add(UserLabel, "cell 0 0");
 
+			//---- BankButton ----
+			BankButton.setText("Manage Banks");
+			BankButton.addActionListener(e -> Bank(e));
+			MainMenuContentPane.add(BankButton, "cell 8 0,alignx center,growx 0");
+
 			//======== ExpensePane ========
 			{
 
@@ -90,7 +102,19 @@ public class MainMenu  {
 				ExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				ExpensePane.setViewportView(ExpenseTable);
 			}
-			MainMenuContentPane.add(ExpensePane, "cell 0 1 4 1");
+			MainMenuContentPane.add(ExpensePane, "cell 0 1 2 1");
+
+			//======== DigitalExpensePane ========
+			{
+
+				//---- DigitalExpenseTable ----
+				DigitalExpenseTable.setShowHorizontalLines(true);
+				DigitalExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+				DigitalExpenseTable.setShowVerticalLines(true);
+				DigitalExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				DigitalExpensePane.setViewportView(DigitalExpenseTable);
+			}
+			MainMenuContentPane.add(DigitalExpensePane, "cell 2 1 2 1");
 
 			//======== BudgetPane ========
 			{
@@ -102,7 +126,7 @@ public class MainMenu  {
 				BudgetTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				BudgetPane.setViewportView(BudgetTable);
 			}
-			MainMenuContentPane.add(BudgetPane, "cell 4 1 5 1");
+			MainMenuContentPane.add(BudgetPane, "cell 4 1 5 1,width 300::423");
 
 			//---- ExpenseButton ----
 			ExpenseButton.setText("<html>Manage<br>Expenses</html>");
@@ -138,8 +162,11 @@ public class MainMenu  {
 	// Generated using JFormDesigner Evaluation license - Acweafa
 	private JFrame MainMenu;
 	private JLabel UserLabel;
+	private JButton BankButton;
 	private JScrollPane ExpensePane;
 	private JTable ExpenseTable;
+	private JScrollPane DigitalExpensePane;
+	private JTable DigitalExpenseTable;
 	private JScrollPane BudgetPane;
 	private JTable BudgetTable;
 	private JButton ExpenseButton;

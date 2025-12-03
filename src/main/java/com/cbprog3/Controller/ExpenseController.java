@@ -99,8 +99,7 @@ public class ExpenseController {
         ArrayList<Float> dailyExpenses = getDailyExpenses();
         if (dailyExpenses.isEmpty()) return 0;
         
-        float totalDays = dailyExpenses.get(0);
-        dailyExpenses.remove(0);
+        float totalDays = dailyExpenses.size();
         
         float total = 0;
         for (float amount : dailyExpenses) {
@@ -114,8 +113,7 @@ public class ExpenseController {
         ArrayList<Float> monthlyExpenses = getMonthlyExpenses();
         if (monthlyExpenses.isEmpty()) return 0;
         
-        float totalMonths = monthlyExpenses.get(0);
-        monthlyExpenses.remove(0);
+        float totalMonths = monthlyExpenses.size();
         
         float total = 0;
         for (float amount : monthlyExpenses) {
@@ -199,10 +197,38 @@ public class ExpenseController {
         if(currentTotal != -1){
             expensePerMonth.add(currentTotal);
         }
-        expensePerMonth.add(0, totalMonths);
         return expensePerMonth;
     }
     
+    public ArrayList<String> getMonthlyExpensesDate() {
+        ArrayList<String> expenseMonth = new ArrayList<>();
+        float totalMonths = 0;
+        float currentTotal = -1;
+        String currentDate = "";
+        String currentMonth = "";
+        String currentYear = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getMonth().equals(currentMonth) || !e.getExpenseDateTime().getYear().equals(currentYear)){
+                if(currentTotal != -1){
+                    expenseMonth.add(currentDate);
+                }
+                currentMonth = e.getExpenseDateTime().getMonth();
+                currentYear = e.getExpenseDateTime().getYear();
+                currentDate = e.getExpenseDateTime().getDateString();
+                currentTotal = e.getExpenseAmount();
+                totalMonths += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expenseMonth.add(currentDate);
+        }
+        return expenseMonth;
+    }
+
     public float getTotalCategoryExpense(String category) {
         float total = 0;
         for (Expense expense : expenses) {
