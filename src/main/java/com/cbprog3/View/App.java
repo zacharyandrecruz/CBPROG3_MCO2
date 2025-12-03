@@ -136,10 +136,10 @@ public class App
                         break;
                 }
             }
-
+            
             // Small delay to prevent excessive CPU usage
             try {
-                Thread.sleep(1);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

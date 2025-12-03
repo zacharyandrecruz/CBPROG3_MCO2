@@ -211,4 +211,19 @@ public class User {
         }
         return false;
     }
+
+    public Bank getBank(String bankName){
+
+        Bank b = null;
+
+        for(Bank bank : userBanks){
+            if(bank.getBankName().equals(bankName)){
+                b = bank;
+            }
+        }
+
+        return b;
+
+    }
+
 }

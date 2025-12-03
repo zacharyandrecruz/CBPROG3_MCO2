@@ -56,6 +56,7 @@ public class ExpenseMenu  {
 	private ExpenseController ec;
 
 	private boolean backed = false;
+	private int selectedTable;
 
 	/**
 	 * Returns the navigation status indicating whether the user has requested
@@ -319,8 +320,18 @@ public class ExpenseMenu  {
 		DateMonthFieldAdd.setText("");
 		DateDayFieldAdd.setText("");
 
+		CategoryBoxAdd.removeAllItems();
+
 		for(String s : ec.getCategories()){
 			CategoryBoxAdd.addItem(s);
+		}
+
+		BankBoxAdd.removeAllItems();
+
+		BankBoxAdd.addItem("None");
+
+		for(Bank b : uc.getCurrentUser().getUserBanks()){
+			BankBoxAdd.addItem(b.getBankName());
 		}
 
 		AddExpenseDialog.setVisible(true);
@@ -341,7 +352,7 @@ public class ExpenseMenu  {
 	 */
 	private void EditExpense(ActionEvent e) {
 		
-		if(ExpenseTable.getSelectedRow() != -1){
+		if(selectedTable == 1){
 
 			ExpenseAmountFieldEdit.setText(Float.toString((float)ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 1)));
 			String dateString = (String) ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 2);
@@ -350,15 +361,52 @@ public class ExpenseMenu  {
 			DateMonthFieldEdit.setText(dStrings[0]);
 			DateDayFieldEdit.setText(dStrings[1]);
 
+			CategoryBoxEdit.removeAllItems();
+
 			for(String s : ec.getCategories()){
 				CategoryBoxEdit.addItem(s);
 			}
 
 			CategoryBoxEdit.setSelectedItem(ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 3));
 			
+			BankBoxEdit.removeAllItems();
+
+			BankBoxEdit.addItem("None");
+
 			for(Bank b : uc.getCurrentUser().getUserBanks()){
 				BankBoxEdit.addItem(b.getBankName());
 			}
+			
+			CategoryBoxEdit.setSelectedItem(e);
+
+			EditExpenseDialog.setVisible(true);
+
+		}else{
+
+			ExpenseAmountFieldEdit.setText(Float.toString((float)DigitalExpenseTable.getModel().getValueAt(DigitalExpenseTable.getSelectedRow(), 1)));
+			String dateString = (String) DigitalExpenseTable.getModel().getValueAt(DigitalExpenseTable.getSelectedRow(), 2);
+			String[] dStrings = dateString.split("/");
+			DateYearFieldEdit.setText(dStrings[2]);
+			DateMonthFieldEdit.setText(dStrings[0]);
+			DateDayFieldEdit.setText(dStrings[1]);
+
+			CategoryBoxEdit.removeAllItems();
+
+			for(String s : ec.getCategories()){
+				CategoryBoxEdit.addItem(s);
+			}
+
+			CategoryBoxEdit.setSelectedItem(DigitalExpenseTable.getModel().getValueAt(DigitalExpenseTable.getSelectedRow(), 3));
+			
+			BankBoxEdit.removeAllItems();
+
+			BankBoxEdit.addItem("None");
+
+			for(Bank b : uc.getCurrentUser().getUserBanks()){
+				BankBoxEdit.addItem(b.getBankName());
+			}
+
+			BankBoxEdit.setSelectedItem(DigitalExpenseTable.getModel().getValueAt(DigitalExpenseTable.getSelectedRow(), 4));
 			
 			CategoryBoxEdit.setSelectedItem(e);
 
@@ -403,8 +451,7 @@ public class ExpenseMenu  {
 	 */
 	private void Refresh(ActionEvent e) {
 		refreshTable();
-		System.out.println("EXPENSE TABLE:" + ExpenseTable.getSelectedRow());
-		System.out.println("DIGITAL EXPENSE TABLE:" + DigitalExpenseTable.getSelectedRow());
+		
 	}
 
 	/**
@@ -429,8 +476,9 @@ public class ExpenseMenu  {
 		float f = Float.parseFloat(ExpenseAmountFieldAdd.getText());
 		DateTime dt = new DateTime(DateYearFieldAdd.getText(), DateMonthFieldAdd.getText(), DateDayFieldAdd.getText(), null, null);
 		String cat = (String) CategoryBoxAdd.getSelectedItem();
+		Bank b = uc.getCurrentUser().getBank((String)BankBoxAdd.getSelectedItem());
 
-		Expense ex = new Expense(null, f, null, dt, cat);
+		Expense ex = new Expense(null, b.getBankName(), b.getBankAccNum(), f, null, null, null, dt, cat);
 
 		dbc.saveExpense(ex, uc.getCurrentUser().getUserID());
 		AddExpenseDialog.setVisible(false);
@@ -465,8 +513,19 @@ public class ExpenseMenu  {
 		float f = Float.parseFloat(ExpenseAmountFieldEdit.getText());
 		DateTime dt = new DateTime(DateYearFieldEdit.getText(), DateMonthFieldEdit.getText(), DateDayFieldEdit.getText(), null, null);
 		String cat = (String) CategoryBoxEdit.getSelectedItem();
+		Bank b = uc.getCurrentUser().getBank((String)BankBoxEdit.getSelectedItem());
 
-		Expense ex = new Expense((String) ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 0), f, null, dt, cat);
+		Expense ex;
+
+		if(selectedTable == 1){
+			ex = new Expense((String) ExpenseTable.getModel().getValueAt(ExpenseTable.getSelectedRow(), 0), b.getBankName(), b.getBankAccNum(), f, null, null, null, dt, cat);
+		}else{
+			if(b != null){
+				ex = new Expense((String) DigitalExpenseTable.getModel().getValueAt(DigitalExpenseTable.getSelectedRow(), 0), b.getBankName(), b.getBankAccNum(), f, null, null, null, dt, cat);
+			}else{
+				ex = new Expense((String) DigitalExpenseTable.getModel().getValueAt(DigitalExpenseTable.getSelectedRow(), 0), f, null, dt, cat);
+			}
+		}
 
 		dbc.updateExpense(ex);
 		EditExpenseDialog.setVisible(false);
@@ -505,6 +564,14 @@ public class ExpenseMenu  {
 	 */
 	private void CancelDelete(ActionEvent e) {
 		DeleteExpenseDialog.setVisible(false);
+	}
+
+	private void ExpenseTableMouseClicked(MouseEvent e) {
+		selectedTable = 1;
+	}
+
+	private void DigitalExpenseTableMouseClicked(MouseEvent e) {
+		selectedTable = 2;
 	}
 
 	/**
@@ -599,6 +666,12 @@ public class ExpenseMenu  {
 				ExpenseTable.setShowVerticalLines(true);
 				ExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 				ExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				ExpenseTable.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						ExpenseTableMouseClicked(e);
+					}
+				});
 				ExpensePane.setViewportView(ExpenseTable);
 			}
 			ExpenseMenuContentPane.add(ExpensePane, "cell 0 0 3 2");
@@ -611,6 +684,12 @@ public class ExpenseMenu  {
 				DigitalExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 				DigitalExpenseTable.setShowHorizontalLines(true);
 				DigitalExpenseTable.setShowVerticalLines(true);
+				DigitalExpenseTable.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						DigitalExpenseTableMouseClicked(e);
+					}
+				});
 				DigitalExpensePane.setViewportView(DigitalExpenseTable);
 			}
 			ExpenseMenuContentPane.add(DigitalExpensePane, "cell 3 0 3 2,wmax 300");
@@ -839,4 +918,10 @@ public class ExpenseMenu  {
 	private JButton ConfirmDelete;
 	private JButton CancelDelete;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+
+	public void showSelected(){
+		System.out.println("EXPENSE TABLE:" + ExpenseTable.getSelectedRow());
+		System.out.println("DIGITAL EXPENSE TABLE:" + DigitalExpenseTable.getSelectedRow());
+	}
+
 }

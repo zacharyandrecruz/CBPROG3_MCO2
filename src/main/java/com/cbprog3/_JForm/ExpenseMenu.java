@@ -59,6 +59,14 @@ public class ExpenseMenu  {
 		// TODO add your code here
 	}
 
+	private void ExpenseTableMouseClicked(MouseEvent e) {
+		// TODO add your code here
+	}
+
+	private void DigitalExpenseTableMouseClicked(MouseEvent e) {
+		// TODO add your code here
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
 		// Generated using JFormDesigner Evaluation license - Acweafa
@@ -132,6 +140,12 @@ public class ExpenseMenu  {
 				ExpenseTable.setShowVerticalLines(true);
 				ExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 				ExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				ExpenseTable.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						ExpenseTableMouseClicked(e);
+					}
+				});
 				ExpensePane.setViewportView(ExpenseTable);
 			}
 			ExpenseMenuContentPane.add(ExpensePane, "cell 0 0 3 2");
@@ -144,6 +158,12 @@ public class ExpenseMenu  {
 				DigitalExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 				DigitalExpenseTable.setShowHorizontalLines(true);
 				DigitalExpenseTable.setShowVerticalLines(true);
+				DigitalExpenseTable.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						DigitalExpenseTableMouseClicked(e);
+					}
+				});
 				DigitalExpensePane.setViewportView(DigitalExpenseTable);
 			}
 			ExpenseMenuContentPane.add(DigitalExpensePane, "cell 3 0 3 2,wmax 300");
