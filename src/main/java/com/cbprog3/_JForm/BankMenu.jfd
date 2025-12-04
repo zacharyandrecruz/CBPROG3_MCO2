@@ -60,5 +60,211 @@ new FormModel {
 			"location": new java.awt.Point( 0, 0 )
 			"size": new java.awt.Dimension( 400, 355 )
 		} )
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "fill,hidemode 3"
+			"$columnConstraints": "[grow,fill][grow,fill][grow,fill][fill]"
+			"$rowConstraints": "[][][][][]"
+		} ) {
+			name: "AddExpenseDialog"
+			"resizable": false
+			"title": "Manage Expenses - Add Expense"
+			"$sizePolicy": 1
+			"$locationPolicy": 1
+			"defaultCloseOperation": 2
+			"type": enum java.awt.Window$Type POPUP
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ExpenseAmountLabelAdd"
+				"text": "Expense Amount:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "ExpenseAmountFieldAdd"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 0 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ExpenseDateLabelAdd"
+				"text": "Expense Date (YYYY-MM-DD):"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 1"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "DateYearFieldAdd"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 1,width 100"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "DateMonthFieldAdd"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 1,width 100"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "DateDayFieldAdd"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 1,width 100"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ExpenseCategoryLabelAdd"
+				"text": "Expense Category:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 2"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "CategoryBoxAdd"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 2 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "ExpenseBankLabelAdd"
+				"text": "Bank:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 3"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "BankBoxAdd"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 3 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "ConfirmAdd"
+				"text": "Confirm"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ConfirmAdd", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 4 2 1,alignx center,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "CancelAdd"
+				"text": "Cancel"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "CancelAdd", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 4,alignx center,growx 0"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": &Dimension0 new java.awt.Dimension( 430, 200 )
+			"location": new java.awt.Point( 410, 0 )
+		} )
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "fill,hidemode 3"
+			"$columnConstraints": "[grow,fill][grow,fill][grow,fill][fill]"
+			"$rowConstraints": "[][][][][]"
+		} ) {
+			name: "EditExpenseDialog"
+			"resizable": false
+			"title": "Manage Expenses - Edit Expense"
+			"$sizePolicy": 1
+			"$locationPolicy": 1
+			"defaultCloseOperation": 2
+			"type": enum java.awt.Window$Type POPUP
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "EditAmountLabel"
+				"text": "Expense Amount:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "ExpenseAmountFieldEdit"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 0 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "EditDateLabel"
+				"text": "Expense Date (YYYY-MM-DD):"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 1"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "DateYearFieldEdit"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 1,width 100"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "DateMonthFieldEdit"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 1,width 100"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "DateDayFieldEdit"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 1,width 100"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "EditCategoryLabel"
+				"text": "Expense Category:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 2"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "CategoryBoxEdit"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 2 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "EditBankLabel"
+				"text": "Bank:"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 3"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "BankBoxEdit"
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 3 3 1"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "ConfirmEdit"
+				"text": "Confirm"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ConfirmEdit", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 4 2 1,alignx center,growx 0"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "CancelEdit"
+				"text": "Cancel"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "CancelEdit", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 3 4,alignx center,growx 0"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": #Dimension0
+			"location": new java.awt.Point( 410, 205 )
+		} )
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+			"$layoutConstraints": "fill,hidemode 3"
+			"$columnConstraints": "[grow,sizegroup 1,fill][grow,sizegroup 1,fill]"
+			"$rowConstraints": "[][]"
+		} ) {
+			name: "DeleteExpenseDialog"
+			"title": "Manage Expenses - Delete Expense"
+			"defaultCloseOperation": 2
+			"$sizePolicy": 1
+			"$locationPolicy": 1
+			"resizable": false
+			"type": enum java.awt.Window$Type POPUP
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "DeleteLabel"
+				"text": "Are you sure you want to delete the selected expense?"
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
+				"horizontalAlignment": 0
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 0 2 1"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "ConfirmDelete"
+				"text": "Confirm"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ConfirmDelete", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 0 1,alignx center,growx 0,width 100::100"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "CancelDelete"
+				"text": "Cancel"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "CancelDelete", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 1 1,alignx center,growx 0,width 100::100"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 430, 110 )
+			"location": new java.awt.Point( 410, 410 )
+		} )
 	}
 }
