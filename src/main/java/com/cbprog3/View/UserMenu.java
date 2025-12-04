@@ -1,8 +1,13 @@
-package com.cbprog3._JForm;
+package com.cbprog3.View;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import com.cbprog3.Controller.DatabaseController;
+import com.cbprog3.Controller.UserController;
+import com.cbprog3.Model.User;
+
 import net.miginfocom.swing.*;
 /*
  * Created by JFormDesigner on Fri Nov 28 16:05:38 SGT 2025
@@ -15,12 +20,52 @@ import net.miginfocom.swing.*;
  */
 public class UserMenu  {
 
+	private UserController uc;
+	private DatabaseController dbc;
+
+	private boolean updated = false;
+
+	public boolean getStatus(){
+		return updated;
+	}
+
+	public void setStatus(boolean b){
+		updated = b;
+	}
+
+	public void setVisible(boolean b){
+		UserMenu.setVisible(b);
+
+		EmailField.setText(uc.getCurrentUser().getUserEmail());
+		FirstNameField.setText(uc.getCurrentUser().getFirstName());
+		LastNameField.setText(uc.getCurrentUser().getSurname());
+		PasswordField.setText(uc.getCurrentUser().getUserPassword());
+
+	}
+
+	public boolean isVisible(){
+		return UserMenu.isVisible();
+	}
+
+	public UserMenu(UserController uc, DatabaseController dbc){
+		this.uc = uc;
+		this.dbc = dbc;
+
+		initComponents();
+	}
+
 	private void Apply(ActionEvent e) {
-		// TODO add your code here
+		
+		User u = new User(uc.getCurrentUser().getUserID(), EmailField.getText(), FirstNameField.getText(), null, LastNameField.getText());
+		u.setUserPassword(PasswordField.getText());
+
+		dbc.updateUser(u);
+		updated = true;
+
 	}
 
 	private void Back(ActionEvent e) {
-		// TODO add your code here
+		updated = true;
 	}
 
 	private void initComponents() {

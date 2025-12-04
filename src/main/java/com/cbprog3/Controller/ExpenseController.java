@@ -14,12 +14,22 @@ public class ExpenseController {
         this.categories = new ArrayList<>();
         initializeDefaultCategories();
     }
+
+    public void updateDatabases(UserController uc, DatabaseController dbc){
+
+        this.budgets = dbc.loadUserBudgets(uc.getCurrentUser().getUserID());
+        this.expenses = dbc.loadUserExpenses(uc.getCurrentUser().getUserID());
+
+    }
     
     private void initializeDefaultCategories() {
         categories.add("FOOD");
         categories.add("TRANSPORTATION");
         categories.add("ENTERTAINMENT");
-        categories.add("UTILITIES");
+        categories.add("UTILITY");
+        categories.add("GROCERY");
+        categories.add("SUBSCRIPTION");
+        categories.add("RENT");
         categories.add("SHOPPING");
         categories.add("HEALTHCARE");
         categories.add("EDUCATION");
@@ -89,8 +99,7 @@ public class ExpenseController {
         ArrayList<Float> dailyExpenses = getDailyExpenses();
         if (dailyExpenses.isEmpty()) return 0;
         
-        float totalDays = dailyExpenses.get(0);
-        dailyExpenses.remove(0);
+        float totalDays = dailyExpenses.size();
         
         float total = 0;
         for (float amount : dailyExpenses) {
@@ -104,8 +113,7 @@ public class ExpenseController {
         ArrayList<Float> monthlyExpenses = getMonthlyExpenses();
         if (monthlyExpenses.isEmpty()) return 0;
         
-        float totalMonths = monthlyExpenses.get(0);
-        monthlyExpenses.remove(0);
+        float totalMonths = monthlyExpenses.size();
         
         float total = 0;
         for (float amount : monthlyExpenses) {
@@ -116,19 +124,111 @@ public class ExpenseController {
     }
     
     public ArrayList<Float> getDailyExpenses() {
-        // Your existing getDailyExpenses() logic here
         ArrayList<Float> expensePerDay = new ArrayList<>();
-        // ... implementation from ExpenseTracker
+        float totalDays = 0;
+        float currentTotal = -1;
+        String currentDay = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getDateString().equals(currentDay)){
+                if(currentTotal != -1){
+                    expensePerDay.add(currentTotal);
+                }
+                currentDay = e.getExpenseDateTime().getDateString();
+                currentTotal = e.getExpenseAmount();
+                totalDays += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expensePerDay.add(currentTotal);
+        }
         return expensePerDay;
     }
     
+    public ArrayList<String> getDailyExpensesDate() {
+        ArrayList<String> expenseDay = new ArrayList<>();
+        float totalDays = 0;
+        float currentTotal = -1;
+        String currentDay = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getDateString().equals(currentDay)){
+                if(currentTotal != -1){
+                    expenseDay.add(currentDay);
+                }
+                currentDay = e.getExpenseDateTime().getDateString();
+                currentTotal = e.getExpenseAmount();
+                totalDays += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expenseDay.add(currentDay);
+        }
+        return expenseDay;
+    }
+
     public ArrayList<Float> getMonthlyExpenses() {
-        // Your existing getMonthlyExpenses() logic here
         ArrayList<Float> expensePerMonth = new ArrayList<>();
-        // ... implementation from ExpenseTracker
+        float totalMonths = 0;
+        float currentTotal = -1;
+        String currentMonth = "";
+        String currentYear = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getMonth().equals(currentMonth) || !e.getExpenseDateTime().getYear().equals(currentYear)){
+                if(currentTotal != -1){
+                    expensePerMonth.add(currentTotal);
+                }
+                currentMonth = e.getExpenseDateTime().getMonth();
+                currentYear = e.getExpenseDateTime().getYear();
+                currentTotal = e.getExpenseAmount();
+                totalMonths += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expensePerMonth.add(currentTotal);
+        }
         return expensePerMonth;
     }
     
+    public ArrayList<String> getMonthlyExpensesDate() {
+        ArrayList<String> expenseMonth = new ArrayList<>();
+        float totalMonths = 0;
+        float currentTotal = -1;
+        String currentDate = "";
+        String currentMonth = "";
+        String currentYear = "";
+        
+        for(Expense e : expenses){
+            if(!e.getExpenseDateTime().getMonth().equals(currentMonth) || !e.getExpenseDateTime().getYear().equals(currentYear)){
+                if(currentTotal != -1){
+                    expenseMonth.add(currentDate);
+                }
+                currentMonth = e.getExpenseDateTime().getMonth();
+                currentYear = e.getExpenseDateTime().getYear();
+                currentDate = e.getExpenseDateTime().getDateString();
+                currentTotal = e.getExpenseAmount();
+                totalMonths += 1;
+            }else{
+                currentTotal += e.getExpenseAmount();
+            }
+        }
+        
+        if(currentTotal != -1){
+            expenseMonth.add(currentDate);
+        }
+        return expenseMonth;
+    }
+
     public float getTotalCategoryExpense(String category) {
         float total = 0;
         for (Expense expense : expenses) {

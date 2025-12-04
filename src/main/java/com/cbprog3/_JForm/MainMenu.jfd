@@ -20,6 +20,13 @@ new FormModel {
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
 				"value": "cell 0 0"
 			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "BankButton"
+				"text": "Manage Banks"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "Bank", true ) )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 8 0,alignx center,growx 0"
+			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "ExpensePane"
 				add( new FormComponent( "javax.swing.JTable" ) {
@@ -30,7 +37,19 @@ new FormModel {
 					"autoResizeMode": 0
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 0 1 4 1"
+				"value": "cell 0 1 2 1"
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "DigitalExpensePane"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "DigitalExpenseTable"
+					"showHorizontalLines": true
+					"selectionMode": 1
+					"showVerticalLines": true
+					"autoResizeMode": 0
+				} )
+			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+				"value": "cell 2 1 2 1"
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "BudgetPane"
@@ -42,7 +61,7 @@ new FormModel {
 					"autoResizeMode": 0
 				} )
 			}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
-				"value": "cell 4 1 5 1"
+				"value": "cell 4 1 5 1,width 300::423"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "ExpenseButton"

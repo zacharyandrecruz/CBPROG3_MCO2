@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import net.miginfocom.swing.*;
 /*
- * Created by JFormDesigner on Fri Nov 28 17:54:58 SGT 2025
+ * Created by JFormDesigner on Thu Dec 04 06:00:41 SGT 2025
  */
 
 
@@ -13,25 +13,28 @@ import net.miginfocom.swing.*;
 /**
  * @author Acee
  */
-public class ExpenseMenu  {
+public class BankMenu {
+	public BankMenu() {
+		initComponents();
+	}
 
-	private void AddExpense(ActionEvent e) {
+	private void Add(ActionEvent e) {
 		// TODO add your code here
 	}
 
-	private void EditExpense(ActionEvent e) {
+	private void Edit(ActionEvent e) {
 		// TODO add your code here
 	}
 
-	private void DeleteExpense(ActionEvent e) {
-		// TODO add your code here
-	}
-
-	private void Back(ActionEvent e) {
+	private void Delete(ActionEvent e) {
 		// TODO add your code here
 	}
 
 	private void Refresh(ActionEvent e) {
+		// TODO add your code here
+	}
+
+	private void Back(ActionEvent e) {
 		// TODO add your code here
 	}
 
@@ -59,27 +62,17 @@ public class ExpenseMenu  {
 		// TODO add your code here
 	}
 
-	private void ExpenseTableMouseClicked(MouseEvent e) {
-		// TODO add your code here
-	}
-
-	private void DigitalExpenseTableMouseClicked(MouseEvent e) {
-		// TODO add your code here
-	}
-
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
 		// Generated using JFormDesigner Evaluation license - Acweafa
-		ExpenseMenu = new JFrame();
-		ExpensePane = new JScrollPane();
-		ExpenseTable = new JTable();
-		DigitalExpensePane = new JScrollPane();
-		DigitalExpenseTable = new JTable();
-		AddExpense = new JButton();
-		EditExpense = new JButton();
-		DeleteExpense = new JButton();
-		BackButton = new JButton();
+		BankMenu = new JFrame();
+		BankPane = new JScrollPane();
+		BankTable = new JTable();
+		AddButton = new JButton();
+		EditButton = new JButton();
+		DeleteButton = new JButton();
 		RefreshButton = new JButton();
+		BackButton = new JButton();
 		AddExpenseDialog = new JDialog();
 		ExpenseAmountLabelAdd = new JLabel();
 		ExpenseAmountFieldAdd = new JTextField();
@@ -111,93 +104,55 @@ public class ExpenseMenu  {
 		ConfirmDelete = new JButton();
 		CancelDelete = new JButton();
 
-		//======== ExpenseMenu ========
+		//======== BankMenu ========
 		{
-			ExpenseMenu.setResizable(false);
-			ExpenseMenu.setTitle("Expense Tracker - Manage Expenses");
-			ExpenseMenu.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			Container ExpenseMenuContentPane = ExpenseMenu.getContentPane();
-			ExpenseMenuContentPane.setLayout(new MigLayout(
-				"hidemode 3",
+			BankMenu.setTitle("Expense Tracker - Bank Menu");
+			BankMenu.setResizable(false);
+			Container BankMenuContentPane = BankMenu.getContentPane();
+			BankMenuContentPane.setLayout(new MigLayout(
+				"fill,hidemode 3",
 				// columns
-				"[grow,fill]" +
-				"[grow,fill]" +
 				"[fill]" +
-				"[grow,fill]" +
-				"[grow,fill]" +
-				"[grow,fill]",
+				"[fill]" +
+				"[fill]" +
+				"[fill]" +
+				"[fill]",
 				// rows
-				"[grow]" +
-				"[grow]" +
-				"[grow]" +
+				"[]" +
 				"[]"));
 
-			//======== ExpensePane ========
+			//======== BankPane ========
 			{
-
-				//---- ExpenseTable ----
-				ExpenseTable.setShowHorizontalLines(true);
-				ExpenseTable.setShowVerticalLines(true);
-				ExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-				ExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-				ExpenseTable.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						ExpenseTableMouseClicked(e);
-					}
-				});
-				ExpensePane.setViewportView(ExpenseTable);
+				BankPane.setViewportView(BankTable);
 			}
-			ExpenseMenuContentPane.add(ExpensePane, "cell 0 0 3 2");
+			BankMenuContentPane.add(BankPane, "cell 0 0 5 1,hmax 250");
 
-			//======== DigitalExpensePane ========
-			{
+			//---- AddButton ----
+			AddButton.setText("Add");
+			AddButton.addActionListener(e -> Add(e));
+			BankMenuContentPane.add(AddButton, "cell 0 1,alignx center,growx 0,wmin 71,hmin 50");
 
-				//---- DigitalExpenseTable ----
-				DigitalExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-				DigitalExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-				DigitalExpenseTable.setShowHorizontalLines(true);
-				DigitalExpenseTable.setShowVerticalLines(true);
-				DigitalExpenseTable.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						DigitalExpenseTableMouseClicked(e);
-					}
-				});
-				DigitalExpensePane.setViewportView(DigitalExpenseTable);
-			}
-			ExpenseMenuContentPane.add(DigitalExpensePane, "cell 3 0 3 2,wmax 300");
+			//---- EditButton ----
+			EditButton.setText("Edit");
+			EditButton.addActionListener(e -> Edit(e));
+			BankMenuContentPane.add(EditButton, "cell 1 1,alignx center,growx 0,wmin 71,hmin 50");
 
-			//---- AddExpense ----
-			AddExpense.setText("Add");
-			AddExpense.setFont(AddExpense.getFont().deriveFont(AddExpense.getFont().getSize() + 3f));
-			AddExpense.addActionListener(e -> AddExpense(e));
-			ExpenseMenuContentPane.add(AddExpense, "cell 0 2 1 2,alignx center,growx 0,hmin 35");
-
-			//---- EditExpense ----
-			EditExpense.setText("Edit");
-			EditExpense.setFont(EditExpense.getFont().deriveFont(EditExpense.getFont().getSize() + 3f));
-			EditExpense.addActionListener(e -> EditExpense(e));
-			ExpenseMenuContentPane.add(EditExpense, "cell 1 2 1 2,alignx center,growx 0,hmin 35");
-
-			//---- DeleteExpense ----
-			DeleteExpense.setText("Delete");
-			DeleteExpense.setFont(DeleteExpense.getFont().deriveFont(DeleteExpense.getFont().getSize() + 3f));
-			DeleteExpense.addActionListener(e -> DeleteExpense(e));
-			ExpenseMenuContentPane.add(DeleteExpense, "cell 2 2 2 2,alignx center,growx 0,hmin 35");
-
-			//---- BackButton ----
-			BackButton.setText("Back");
-			BackButton.setFont(BackButton.getFont().deriveFont(BackButton.getFont().getSize() + 2f));
-			BackButton.addActionListener(e -> Back(e));
-			ExpenseMenuContentPane.add(BackButton, "cell 5 2 1 2,alignx center,growx 0,wmax 75,hmin 35");
+			//---- DeleteButton ----
+			DeleteButton.setText("Delete");
+			DeleteButton.addActionListener(e -> Delete(e));
+			BankMenuContentPane.add(DeleteButton, "cell 2 1,alignx center,growx 0,wmin 71,hmin 50");
 
 			//---- RefreshButton ----
 			RefreshButton.setText("Refresh");
 			RefreshButton.addActionListener(e -> Refresh(e));
-			ExpenseMenuContentPane.add(RefreshButton, "cell 4 2 1 2,alignx center,growx 0,wmin 90,hmin 35");
-			ExpenseMenu.setSize(450, 530);
-			ExpenseMenu.setLocationRelativeTo(null);
+			BankMenuContentPane.add(RefreshButton, "cell 3 1,wmin 71,hmin 50");
+
+			//---- BackButton ----
+			BackButton.setText("Back");
+			BackButton.addActionListener(e -> Back(e));
+			BankMenuContentPane.add(BackButton, "cell 4 1,alignx center,growx 0,wmin 71,hmin 50");
+			BankMenu.setSize(400, 355);
+			BankMenu.setLocationRelativeTo(null);
 		}
 
 		//======== AddExpenseDialog ========
@@ -351,16 +306,14 @@ public class ExpenseMenu  {
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
 	// Generated using JFormDesigner Evaluation license - Acweafa
-	private JFrame ExpenseMenu;
-	private JScrollPane ExpensePane;
-	private JTable ExpenseTable;
-	private JScrollPane DigitalExpensePane;
-	private JTable DigitalExpenseTable;
-	private JButton AddExpense;
-	private JButton EditExpense;
-	private JButton DeleteExpense;
-	private JButton BackButton;
+	private JFrame BankMenu;
+	private JScrollPane BankPane;
+	private JTable BankTable;
+	private JButton AddButton;
+	private JButton EditButton;
+	private JButton DeleteButton;
 	private JButton RefreshButton;
+	private JButton BackButton;
 	private JDialog AddExpenseDialog;
 	private JLabel ExpenseAmountLabelAdd;
 	private JTextField ExpenseAmountFieldAdd;

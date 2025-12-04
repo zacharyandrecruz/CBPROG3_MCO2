@@ -63,7 +63,18 @@ public class MainMenu{
 	public void reloadTables(){
 
 		//Load Expenses
-		ArrayList<Expense> expenseList = dbc.loadUserExpenses(uc.getCurrentUser().getUserID());
+		ArrayList<Expense> rawExpenseList = dbc.loadUserExpenses(uc.getCurrentUser().getUserID());
+
+		ArrayList<Expense> expenseList = new ArrayList<>();
+		ArrayList<Expense> digitalExpenseList = new ArrayList<>();
+
+		for(int i = 0; i < rawExpenseList.size(); i++){
+			if(rawExpenseList.get(i).getExpenseBank() != null){
+				digitalExpenseList.add(rawExpenseList.get(i));
+			}else{
+				expenseList.add(rawExpenseList.get(i));
+			}
+		}
 
 		TableModel etm = new TableModel() {
 
@@ -143,6 +154,88 @@ public class MainMenu{
 		}
 
 		ExpenseTable.setColumnModel(tcm);
+
+		TableModel detm = new TableModel() {
+
+			@Override
+			public int getRowCount() {
+				return digitalExpenseList.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 5;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+				switch(columnIndex){
+					case 0: return "Expense ID";
+					case 1: return "Expense Amount";
+					case 2: return "Expense Date";
+					case 3: return "Expense Category";
+					case 4: return "Bank";
+				}
+				return "null";
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				switch(columnIndex){
+					case 0: return String.class;
+					case 1: return Float.class;
+					case 2: return String.class;
+					case 3: return String.class;
+					case 4: return String.class;
+				}
+				return String.class;
+			}
+
+			@Override
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				return false;
+			}
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				
+				Expense e = digitalExpenseList.get(rowIndex);
+
+				switch(columnIndex){
+					case 0: return e.getExpenseID();
+					case 1: return e.getExpenseAmount();
+					case 2: return e.getExpenseDateTime().getDateString();
+					case 3: return e.getExpenseCategory();
+					case 4: return e.getExpenseBank().getBankName();
+				}
+				return null;
+
+			}
+
+			@Override
+			public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+				System.out.println("Attempted to set value at: (" + Integer.toString(rowIndex) + ", " + Integer.toString(columnIndex) + ")");
+			}
+
+			@Override
+			public void addTableModelListener(TableModelListener l) {
+			}
+
+			@Override
+			public void removeTableModelListener(TableModelListener l) {
+			}
+			
+		};
+
+		DigitalExpenseTable.setModel(detm);
+
+		TableColumnModel dtcm = DigitalExpenseTable.getColumnModel();
+
+		for(int i = 0; i < dtcm.getColumnCount(); i++){
+			dtcm.getColumn(i).setMinWidth(150);
+		}
+
+		DigitalExpenseTable.setColumnModel(dtcm);
 
 		//Load Budgets
 
@@ -256,13 +349,20 @@ public class MainMenu{
 		reloadTables();
 	}
 
+	private void Bank(ActionEvent e) {
+		// TODO add your code here
+	}
+
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
 		// Generated using JFormDesigner Evaluation license - Acweafa
 		MainMenu = new JFrame();
 		UserLabel = new JLabel();
+		BankButton = new JButton();
 		ExpensePane = new JScrollPane();
 		ExpenseTable = new JTable();
+		DigitalExpensePane = new JScrollPane();
+		DigitalExpenseTable = new JTable();
 		BudgetPane = new JScrollPane();
 		BudgetTable = new JTable();
 		ExpenseButton = new JButton();
@@ -301,6 +401,11 @@ public class MainMenu{
 			UserLabel.setText("Logged in as: ");
 			MainMenuContentPane.add(UserLabel, "cell 0 0");
 
+			//---- BankButton ----
+			BankButton.setText("Manage Banks");
+			BankButton.addActionListener(e -> Bank(e));
+			MainMenuContentPane.add(BankButton, "cell 8 0,alignx center,growx 0");
+
 			//======== ExpensePane ========
 			{
 
@@ -311,7 +416,19 @@ public class MainMenu{
 				ExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				ExpensePane.setViewportView(ExpenseTable);
 			}
-			MainMenuContentPane.add(ExpensePane, "cell 0 1 4 1");
+			MainMenuContentPane.add(ExpensePane, "cell 0 1 2 1");
+
+			//======== DigitalExpensePane ========
+			{
+
+				//---- DigitalExpenseTable ----
+				DigitalExpenseTable.setShowHorizontalLines(true);
+				DigitalExpenseTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+				DigitalExpenseTable.setShowVerticalLines(true);
+				DigitalExpenseTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				DigitalExpensePane.setViewportView(DigitalExpenseTable);
+			}
+			MainMenuContentPane.add(DigitalExpensePane, "cell 2 1 2 1");
 
 			//======== BudgetPane ========
 			{
@@ -323,7 +440,7 @@ public class MainMenu{
 				BudgetTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				BudgetPane.setViewportView(BudgetTable);
 			}
-			MainMenuContentPane.add(BudgetPane, "cell 4 1 5 1");
+			MainMenuContentPane.add(BudgetPane, "cell 4 1 5 1,width 300::423");
 
 			//---- ExpenseButton ----
 			ExpenseButton.setText("<html>Manage<br>Expenses</html>");
@@ -359,8 +476,11 @@ public class MainMenu{
 	// Generated using JFormDesigner Evaluation license - Acweafa
 	private JFrame MainMenu;
 	private JLabel UserLabel;
+	private JButton BankButton;
 	private JScrollPane ExpensePane;
 	private JTable ExpenseTable;
+	private JScrollPane DigitalExpensePane;
+	private JTable DigitalExpenseTable;
 	private JScrollPane BudgetPane;
 	private JTable BudgetTable;
 	private JButton ExpenseButton;
